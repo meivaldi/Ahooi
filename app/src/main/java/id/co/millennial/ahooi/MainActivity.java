@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    }
+
+                    if (progressStatus >= 99.0f) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getApplicationContext(), "Waktu Habis!!!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             }

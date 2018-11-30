@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_first_splash_screen"
+    android:id="@+id/activity_question"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="id.co.millennial.ahooi.MainActivity">
+    tools:context="id.co.millennial.ahooi.QuestionActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -12,11 +12,12 @@
         android:background="@drawable/background"/>
 
     <RelativeLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/login"
+            android:id="@+id/back"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_alignParentStart="true"
@@ -95,54 +96,53 @@
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/notifikasi"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentEnd="true"
+        <RelativeLayout
             android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="20dp"
-            android:src="@drawable/notifikasi"/>
+            android:layout_marginEnd="20dp">
+
+            <ImageView
+                android:id="@+id/star"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/star"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/poin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/star"
+                android:layout_centerVertical="true"
+                android:text="520"
+                android:textSize="20dp"
+                android:textColor="@android:color/white"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
     <LinearLayout
+        android:layout_below="@id/top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:layout_margin="16dp">
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp"
+        android:background="#513a5a" />
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:src="@drawable/logo_white" />
-
-        <Button
-            android:id="@+id/main"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_weight="1"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/mulai" />
-
-        <Button
-            android:id="@+id/hadiah"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_weight="1"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
-            android:layout_gravity="center"
-            android:background="@drawable/hadiah" />
-
-    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/progress"
+        android:layout_below="@id/top"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp"
+        android:background="#54ce5c" />
 
 </RelativeLayout>

@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondSplashScreen"></activity>
+        <activity android:name=".SecondSplashScreen" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".QuestionActivity"></activity>
     </application>
 
 </manifest>

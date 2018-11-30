@@ -1,59 +1,75 @@
 package id.co.millennial.ahooi;
 
-import android.os.Handler;
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ProgressBar;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ProgressBar progressBar;
-    private Handler handler = new Handler();
-    private float progressStatus = 0;
-    private TextView textView;
-    private CircularProgressBar circularProgressBar;
+    private Button main, hadiah, keluar;
+    private RelativeLayout login;
+    private Dialog dialog;
+    private TextView title;
 
-    private int time = 30;
+    private LinearLayout progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        textView = (TextView) findViewById(R.id.timer);
-        circularProgressBar = (CircularProgressBar) findViewById(R.id.custom_progressBar);
-        circularProgressBar.setProgress(50.0f);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
 
-        /*progressBar = (ProgressBar) findViewById(R.id.progressBar);*/
-        new Thread(new Runnable() {
-            public void run() {
-                while (progressStatus < 100) {
-                    progressStatus += 3.3f;
-                    handler.post(new Runnable() {
-                        public void run() {
-                            circularProgressBar.setProgress(progressStatus);
-                            textView.setText("" + time--);
-                        }
-                    });
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (progressStatus >= 99.0f) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), "Waktu Habis!!!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
+        login = (RelativeLayout) findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
-        }).start();
+        });
 
+        main = (Button) findViewById(R.id.main);
+        hadiah = (Button) findViewById(R.id.hadiah);
+        //keluar = (Button) findViewById(R.id.keluar);
+
+        main.setTypeface(typeface);
+        hadiah.setTypeface(typeface);
+        //keluar.setTypeface(typeface);
+
+        dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.pop_up);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        title = dialog.findViewById(R.id.title);
+        title.setTypeface(typeface);
+
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        dialog.dismiss();
+        finish();
     }
 }

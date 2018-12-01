@@ -1,4 +1,4 @@
-package id.co.millennial.ahooi;
+package id.co.millennial.ahooi.activity;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+
+import id.co.millennial.ahooi.R;
 
 /**
  * Created by root on 27/11/18.

@@ -22,13 +22,14 @@
             android:textColor="#f8ac49" />
 
         <TextView
+            android:id="@+id/label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:text="Point Kau"
+            android:text="Point Ko Segini aja wak ???"
             android:textColor="@android:color/white"
-            android:textSize="18dp" />
+            android:textSize="20dp" />
 
         <RelativeLayout
             android:layout_gravity="center"

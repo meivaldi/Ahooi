@@ -4,7 +4,7 @@
     android:id="@+id/activity_question"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="id.co.millennial.ahooi.QuestionActivity">
+    tools:context="id.co.millennial.ahooi.activity.QuestionActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -52,11 +52,14 @@
 
                     <TextView
                         android:id="@+id/masok"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center"
                         android:text="Masok"
+                        android:textSize="10dp"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"/>
 
@@ -106,8 +109,8 @@
 
             <ImageView
                 android:id="@+id/star"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@drawable/star"
                 android:layout_centerVertical="true"/>
 
@@ -126,23 +129,155 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <!--<RelativeLayout
         android:layout_below="@id/top"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:background="#513a5a" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/progress"
         android:layout_below="@id/top"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginTop="40dp"
-        android:background="#54ce5c" />
+        android:layout_marginTop="20dp"
+        android:background="#54ce5c" />-->
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_below="@id/top"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="40dp"
+        android:progress="100"
+        android:progressDrawable="@drawable/custom_progressbar"
+        style="@android:style/Widget.ProgressBar.Horizontal"/>
+
+    <LinearLayout
+        android:id="@+id/question"
+        android:layout_below="@id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="20dp"
+        android:background="@drawable/rounded_white">
+
+        <TextView
+            android:id="@+id/pertanyaan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Tanggal berapa pemilu 2019 dilaksanakan?"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/up"
+        android:layout_below="@id/question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="50"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/rounded_answer">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="17 April 2019"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="50"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/rounded_answer">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="19 April 2019"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_below="@id/up"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="50"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/rounded_answer">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="18 April 2019"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="50"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/rounded_answer">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="20 April 2019"
+                android:textColor="@android:color/white"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

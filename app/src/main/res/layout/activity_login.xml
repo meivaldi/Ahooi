@@ -4,7 +4,7 @@
     android:id="@+id/activity_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="id.co.millennial.ahooi.LoginActivity">
+    tools:context="id.co.millennial.ahooi.activity.LoginActivity">
 
     <ImageView
         android:layout_width="match_parent"

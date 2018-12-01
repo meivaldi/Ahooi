@@ -4,7 +4,7 @@
     android:id="@+id/activity_first_splash_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="id.co.millennial.ahooi.MainActivity">
+    tools:context="id.co.millennial.ahooi.activity.MainActivity">
 
     <ImageView
         android:layout_width="match_parent"
@@ -51,11 +51,14 @@
 
                     <TextView
                         android:id="@+id/masok"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center"
                         android:text="Masok"
+                        android:textSize="10dp"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"/>
 
@@ -142,6 +145,17 @@
             android:layout_marginEnd="40dp"
             android:layout_gravity="center"
             android:background="@drawable/hadiah" />
+
+        <Button
+            android:id="@+id/keluar"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/keluar" />
 
     </LinearLayout>
 

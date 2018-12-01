@@ -1,4 +1,4 @@
-package id.co.millennial.ahooi;
+package id.co.millennial.ahooi.activity;
 
 import android.content.Context;
 import android.graphics.Canvas;

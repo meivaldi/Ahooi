@@ -174,13 +174,8 @@ public class QuestionActivity extends AppCompatActivity {
                 click.start();
 
                 if(answer[0].isValue()){
-                    user_point += Integer.valueOf(pertanyaan.getPoint());
-                    poin.setText(Integer.toString(user_point));
-                    answer1.setBackgroundColor(getResources().getColor(R.color.benar));
-                    answer1.setClickable(false);
-                    answer2.setClickable(false);
-                    answer3.setClickable(false);
-                    answer4.setClickable(false);
+                    benar(answer1);
+                    refresh();
                 } else {
                     answer1.setBackgroundColor(getResources().getColor(R.color.salah));
                     point.setText(Integer.toString(user_point));
@@ -196,16 +191,11 @@ public class QuestionActivity extends AppCompatActivity {
                 click.start();
 
                 if(answer[1].isValue()){
-                    user_point += Integer.valueOf(pertanyaan.getPoint());
-                    poin.setText(Integer.toString(user_point));
-                    answer2.setBackgroundColor(getResources().getColor(R.color.benar));
-                    answer1.setClickable(false);
-                    answer2.setClickable(false);
-                    answer3.setClickable(false);
-                    answer4.setClickable(false);
+                    benar(answer2);
                 } else {
                     answer2.setBackgroundColor(getResources().getColor(R.color.salah));
-
+                    point.setText(Integer.toString(user_point));
+                    dialog.show();
                 }
             }
         });
@@ -217,13 +207,7 @@ public class QuestionActivity extends AppCompatActivity {
                 click.start();
 
                 if(answer[2].isValue()){
-                    user_point += Integer.valueOf(pertanyaan.getPoint());
-                    poin.setText(Integer.toString(user_point));
-                    answer3.setBackgroundColor(getResources().getColor(R.color.benar));
-                    answer1.setClickable(false);
-                    answer2.setClickable(false);
-                    answer3.setClickable(false);
-                    answer4.setClickable(false);
+                    benar(answer3);
                 } else {
                     answer3.setBackgroundColor(getResources().getColor(R.color.salah));
                     point.setText(Integer.toString(user_point));
@@ -239,13 +223,7 @@ public class QuestionActivity extends AppCompatActivity {
                 click.start();
 
                 if(answer[3].isValue()){
-                    user_point += Integer.valueOf(pertanyaan.getPoint());
-                    poin.setText(Integer.toString(user_point));
-                    answer4.setBackgroundColor(getResources().getColor(R.color.benar));
-                    answer1.setClickable(false);
-                    answer2.setClickable(false);
-                    answer3.setClickable(false);
-                    answer4.setClickable(false);
+                    benar(answer4);
                 } else {
                     answer4.setBackgroundColor(getResources().getColor(R.color.salah));
                     point.setText(Integer.toString(user_point));
@@ -255,6 +233,19 @@ public class QuestionActivity extends AppCompatActivity {
         });
 
         loadQuestion(Integer.toString(id));
+    }
+
+    private void refresh() {
+    }
+
+    private void benar(LinearLayout answer) {
+        user_point += Integer.valueOf(pertanyaan.getPoint());
+        poin.setText(Integer.toString(user_point));
+        answer.setBackgroundColor(getResources().getColor(R.color.benar));
+        answer1.setClickable(false);
+        answer2.setClickable(false);
+        answer3.setClickable(false);
+        answer4.setClickable(false);
     }
 
     private void loadQuestion(final String id) {

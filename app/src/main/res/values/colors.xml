@@ -7,4 +7,6 @@
     <color name="primaryLightColor">#ff5f51</color>
     <color name="primaryDarkColor">#b40000</color>
     <color name="primaryTextColor">#000000</color>
+    <color name="right">#00ff00</color>
+    <color name="color_default">#2d2a2a</color>
 </resources>

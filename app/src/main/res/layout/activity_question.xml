@@ -121,7 +121,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_toRightOf="@id/star"
                 android:layout_centerVertical="true"
-                android:text="520"
+                android:text="0"
                 android:textSize="20dp"
                 android:textColor="@android:color/white"/>
 
@@ -160,7 +160,7 @@
         android:progressDrawable="@drawable/custom_progressbar"
         style="@android:style/Widget.ProgressBar.Horizontal"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/question"
         android:layout_below="@id/progress"
         android:layout_width="match_parent"
@@ -168,8 +168,36 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:padding="20dp"
+        android:padding="10dp"
         android:background="@drawable/rounded_white">
+
+        <RelativeLayout
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="20dp">
+
+            <ImageView
+                android:id="@+id/star_"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_star"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/question_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_toRightOf="@id/star_"
+                android:layout_centerVertical="true"
+                android:text="0"
+                android:textSize="10dp"
+                android:textColor="#676364"/>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/pertanyaan"
@@ -177,9 +205,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Tanggal berapa pemilu 2019 dilaksanakan?"/>
+            android:text=""/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/up"
@@ -196,6 +224,7 @@
         android:weightSum="100">
 
         <LinearLayout
+            android:id="@+id/answer1"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="50"
@@ -203,16 +232,18 @@
             android:background="@drawable/rounded_answer">
 
             <TextView
+                android:id="@+id/a"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="17 April 2019"
+                android:text=""
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/answer3"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="50"
@@ -220,11 +251,12 @@
             android:background="@drawable/rounded_answer">
 
             <TextView
+                android:id="@+id/c"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="19 April 2019"
+                android:text=""
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>
@@ -245,6 +277,7 @@
         android:weightSum="100">
 
         <LinearLayout
+            android:id="@+id/answer2"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="50"
@@ -252,16 +285,18 @@
             android:background="@drawable/rounded_answer">
 
             <TextView
+                android:id="@+id/b"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="18 April 2019"
+                android:text=""
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/answer4"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_weight="50"
@@ -269,11 +304,12 @@
             android:background="@drawable/rounded_answer">
 
             <TextView
+                android:id="@+id/d"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="20 April 2019"
+                android:text=""
                 android:textColor="@android:color/white"/>
 
         </LinearLayout>

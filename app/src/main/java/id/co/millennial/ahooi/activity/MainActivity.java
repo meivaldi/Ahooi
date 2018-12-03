@@ -3,6 +3,7 @@ package id.co.millennial.ahooi.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private Dialog dialog;
     private TextView title, nama;
     private ImageView notifikasi;
+    private MediaPlayer click;
 
     private SQLiteHandler db;
     private SessionManager session;
@@ -56,11 +58,14 @@ public class MainActivity extends AppCompatActivity {
             nama.setText(name);
         }
 
+        click = MediaPlayer.create(this, R.raw.click);
+
         login = (RelativeLayout) findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                click.start();
             }
         });
 
@@ -84,7 +89,16 @@ public class MainActivity extends AppCompatActivity {
         main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                click.start();
                 startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
+            }
+        });
+
+        hadiah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.start();
+                startActivity(new Intent(getApplicationContext(), HadiahActivity.class));
             }
         });
 
@@ -92,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.show();
+                click.start();
             }
         });
     }
@@ -111,4 +126,5 @@ public class MainActivity extends AppCompatActivity {
         dialog.dismiss();
         finish();
     }
+
 }

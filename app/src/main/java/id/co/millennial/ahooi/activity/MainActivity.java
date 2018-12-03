@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             HashMap<String, String> user = db.getUserDetails();
             String name = user.get("name");
-
-
             nama.setText(name);
         }
 

@@ -125,13 +125,13 @@ public class QuestionActivity extends AppCompatActivity {
 
         if (!session.isLoggedIn()) {
             logoutUser();
+        } else {
+            HashMap<String, String> user = db.getUserDetails();
+            String name = user.get("name");
+
+            nama = (TextView) findViewById(R.id.masok);
+            nama.setText(name);
         }
-
-        HashMap<String, String> user = db.getUserDetails();
-        String name = user.get("name");
-
-        nama = (TextView) findViewById(R.id.masok);
-        nama.setText(name);
 
         tr = new Thread(new Runnable() {
             @Override
@@ -176,9 +176,13 @@ public class QuestionActivity extends AppCompatActivity {
                 if(answer[0].isValue()){
                     user_point += Integer.valueOf(pertanyaan.getPoint());
                     poin.setText(Integer.toString(user_point));
-                    answer1.setBackgroundColor(getResources().getColor(R.color.right));
+                    answer1.setBackgroundColor(getResources().getColor(R.color.benar));
+                    answer1.setClickable(false);
+                    answer2.setClickable(false);
+                    answer3.setClickable(false);
+                    answer4.setClickable(false);
                 } else {
-                    answer1.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+                    answer1.setBackgroundColor(getResources().getColor(R.color.salah));
                     point.setText(Integer.toString(user_point));
                     dialog.show();
                 }
@@ -194,9 +198,13 @@ public class QuestionActivity extends AppCompatActivity {
                 if(answer[1].isValue()){
                     user_point += Integer.valueOf(pertanyaan.getPoint());
                     poin.setText(Integer.toString(user_point));
-                    answer2.setBackgroundColor(getResources().getColor(R.color.right));
+                    answer2.setBackgroundColor(getResources().getColor(R.color.benar));
+                    answer1.setClickable(false);
+                    answer2.setClickable(false);
+                    answer3.setClickable(false);
+                    answer4.setClickable(false);
                 } else {
-                    answer2.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+                    answer2.setBackgroundColor(getResources().getColor(R.color.salah));
 
                 }
             }
@@ -211,9 +219,13 @@ public class QuestionActivity extends AppCompatActivity {
                 if(answer[2].isValue()){
                     user_point += Integer.valueOf(pertanyaan.getPoint());
                     poin.setText(Integer.toString(user_point));
-                    answer3.setBackgroundColor(getResources().getColor(R.color.right));
+                    answer3.setBackgroundColor(getResources().getColor(R.color.benar));
+                    answer1.setClickable(false);
+                    answer2.setClickable(false);
+                    answer3.setClickable(false);
+                    answer4.setClickable(false);
                 } else {
-                    answer3.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+                    answer3.setBackgroundColor(getResources().getColor(R.color.salah));
                     point.setText(Integer.toString(user_point));
                     dialog.show();
                 }
@@ -229,9 +241,13 @@ public class QuestionActivity extends AppCompatActivity {
                 if(answer[3].isValue()){
                     user_point += Integer.valueOf(pertanyaan.getPoint());
                     poin.setText(Integer.toString(user_point));
-                    answer4.setBackgroundColor(getResources().getColor(R.color.right));
+                    answer4.setBackgroundColor(getResources().getColor(R.color.benar));
+                    answer1.setClickable(false);
+                    answer2.setClickable(false);
+                    answer3.setClickable(false);
+                    answer4.setClickable(false);
                 } else {
-                    answer4.setBackgroundColor(getResources().getColor(R.color.primaryColor));
+                    answer4.setBackgroundColor(getResources().getColor(R.color.salah));
                     point.setText(Integer.toString(user_point));
                     dialog.show();
                 }

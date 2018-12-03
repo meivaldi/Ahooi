@@ -11,13 +11,20 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import id.co.millennial.ahooi.R;
+import id.co.millennial.ahooi.helper.SQLiteHandler;
+import id.co.millennial.ahooi.helper.SessionManager;
 
-public class HadiahActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
-    private Button ambil;
-    private TextView point, title, price_name;
     private RelativeLayout back;
+    private Button logout;
+    private TextView userName, point;
+
+    private SQLiteHandler db;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,19 +32,22 @@ public class HadiahActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.hadiah);
+        setContentView(R.layout.activity_profile);
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
 
-        price_name = (TextView) findViewById(R.id.price_name);
-        ambil = (Button) findViewById(R.id.ambil);
+        userName = (TextView) findViewById(R.id.user_name);
         point = (TextView) findViewById(R.id.point);
-        title = (TextView) findViewById(R.id.title);
-
-        ambil.setTypeface(typeface);
         point.setTypeface(typeface);
-        title.setTypeface(typeface);
-        price_name.setTypeface(typeface);
+
+        session = new SessionManager(getApplicationContext());
+        db = new SQLiteHandler(getApplicationContext());
+
+        HashMap<String, String> user = db.getUserDetails();
+        String name = user.get("name");
+
+        userName.setText(name);
+        userName.setTypeface(typeface);
 
         back = (RelativeLayout) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -46,18 +56,27 @@ public class HadiahActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
+
+        logout = (Button) findViewById(R.id.logout);
+        logout.setTypeface(typeface);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logoutUser();
+            }
+        });
+    }
+
+    private void logoutUser() {
+        session.setLogin(false);
+        db.deleteUsers();
+
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
 
         finish();
     }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_profile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="id.co.millennial.ahooi.activity.ProfileActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"/>
+
+    <RelativeLayout
+        android:id="@+id/back"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/layout_1"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/circle_2"/>
+
+        <RelativeLayout
+            android:id="@+id/layout_2"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/circle">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_back"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/profile"/>
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:textSize="18dp"
+            android:textColor="@android:color/white"
+            android:text="User Name"/>
+
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/star"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/star"
+                android:layout_centerVertical="true"
+                android:text="0 Points"
+                android:textSize="20dp"
+                android:textColor="@android:color/white"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp">
+
+            <Button
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:clickable="false"
+                android:background="@drawable/keluar_button_2"/>
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Keluar"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:clickable="false"
+                android:background="@drawable/keluar_button"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

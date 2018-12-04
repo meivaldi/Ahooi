@@ -49,7 +49,7 @@ public class QuestionActivity extends AppCompatActivity {
     private ProgressBar progress;
     private Handler handler = new Handler();
     private Dialog dialog;
-    private Button balek;
+    private Button balek, ulangi;
 
     private int width = 100;
     private int user_point = 0;
@@ -169,14 +169,36 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
 
+        ulangi = (Button) dialog.findViewById(R.id.restart);
+        ulangi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                isRunning = true;
+                user_point -= 30;
+                if(user_point < 0)
+                    user_point = 0;
+
+                poin.setText(user_point + "");
+            }
+        });
+
         answer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(INDEX < 9){
+                if(questionList.get(INDEX).getAnswerList().get(0).isValue()){
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
-                    startQuestion(INDEX);
+                    if(INDEX < 10){
+                        startQuestion(INDEX);
+                    } else {
+                        isRunning = false;
+                        point.setText("" + user_point);
+                        if(user_point == 100 || INDEX == 10)
+                            ulangi.setVisibility(View.GONE);
+                        dialog.show();
+                    }
                 } else {
                     isRunning = false;
                     point.setText("" + user_point);
@@ -188,11 +210,19 @@ public class QuestionActivity extends AppCompatActivity {
         answer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(INDEX < 9){
+                if(questionList.get(INDEX).getAnswerList().get(1).isValue()){
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
-                    startQuestion(INDEX);
+                    if(INDEX < 10){
+                        startQuestion(INDEX);
+                    } else {
+                        isRunning = false;
+                        point.setText("" + user_point);
+                        if(user_point == 100 || INDEX == 10)
+                            ulangi.setVisibility(View.GONE);
+                        dialog.show();
+                    }
                 } else {
                     isRunning = false;
                     point.setText("" + user_point);
@@ -204,11 +234,19 @@ public class QuestionActivity extends AppCompatActivity {
         answer3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(INDEX < 9){
+                if(questionList.get(INDEX).getAnswerList().get(2).isValue()){
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
-                    startQuestion(INDEX);
+                    if(INDEX < 10){
+                        startQuestion(INDEX);
+                    } else {
+                        isRunning = false;
+                        point.setText("" + user_point);
+                        if(user_point == 100 || INDEX == 10)
+                            ulangi.setVisibility(View.GONE);
+                        dialog.show();
+                    }
                 } else {
                     isRunning = false;
                     point.setText("" + user_point);
@@ -220,11 +258,19 @@ public class QuestionActivity extends AppCompatActivity {
         answer4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(INDEX < 9){
+                if(questionList.get(INDEX).getAnswerList().get(3).isValue()){
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
-                    startQuestion(INDEX);
+                    if(INDEX < 10){
+                        startQuestion(INDEX);
+                    } else {
+                        isRunning = false;
+                        point.setText("" + user_point);
+                        if(user_point == 100 || INDEX == 10)
+                            ulangi.setVisibility(View.GONE);
+                        dialog.show();
+                    }
                 } else {
                     isRunning = false;
                     point.setText("" + user_point);
@@ -333,7 +379,6 @@ public class QuestionActivity extends AppCompatActivity {
         dialog.dismiss();
         end.stop();
         click.stop();
-        finish();
     }
 
     @Override

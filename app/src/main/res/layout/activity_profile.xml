@@ -85,7 +85,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_toRightOf="@id/star"
                 android:layout_centerVertical="true"
-                android:text="0 Points"
+                android:text="0 Poen"
                 android:textSize="20dp"
                 android:textColor="@android:color/white"/>
 

@@ -136,6 +136,7 @@ public class QuestionActivity extends AppCompatActivity {
                     String email = user.get("email");
 
                     updatePoint(Integer.toString(user_point), email);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Login dulu wak!", Toast.LENGTH_SHORT).show();
@@ -207,14 +208,14 @@ public class QuestionActivity extends AppCompatActivity {
                         check.setVisibility(View.GONE);
                         startQuestion(INDEX);
                     } else {
-                        isRunning = false;
+                        setRunning(false);
                         point.setText("" + user_point);
                         if(user_point == 100 || INDEX == 10)
                             ulangi.setVisibility(View.GONE);
                         showDialog();
                     }
                 } else {
-                    isRunning = false;
+                    setRunning(false);
                     point.setText("" + user_point);
                     showDialog();
                 }
@@ -232,14 +233,14 @@ public class QuestionActivity extends AppCompatActivity {
                         check.setVisibility(View.GONE);
                         startQuestion(INDEX);
                     } else {
-                        isRunning = false;
+                        setRunning(false);
                         point.setText("" + user_point);
                         if(user_point == 100 || INDEX == 10)
                             ulangi.setVisibility(View.GONE);
                         showDialog();
                     }
                 } else {
-                    isRunning = false;
+                    setRunning(false);
                     point.setText("" + user_point);
                     showDialog();
                 }
@@ -257,14 +258,14 @@ public class QuestionActivity extends AppCompatActivity {
                         check.setVisibility(View.GONE);
                         startQuestion(INDEX);
                     } else {
-                        isRunning = false;
+                        setRunning(false);
                         point.setText("" + user_point);
                         if(user_point == 100 || INDEX == 10)
                             ulangi.setVisibility(View.GONE);
                         showDialog();
                     }
                 } else {
-                    isRunning = false;
+                    setRunning(false);
                     point.setText("" + user_point);
                     showDialog();
                 }
@@ -282,14 +283,14 @@ public class QuestionActivity extends AppCompatActivity {
                         check.setVisibility(View.GONE);
                         startQuestion(INDEX);
                     } else {
-                        isRunning = false;
+                        setRunning(false);
                         point.setText("" + user_point);
                         if(user_point == 100 || INDEX == 10)
                             ulangi.setVisibility(View.GONE);
                         showDialog();
                     }
                 } else {
-                    isRunning = false;
+                    setRunning(false);
                     point.setText("" + user_point);
                     showDialog();
                 }
@@ -365,7 +366,7 @@ public class QuestionActivity extends AppCompatActivity {
                     user_point = 0;
 
                 width = 100;
-                isRunning = true;
+                setRunning(true);
                 poin.setText(user_point + "");
                 check.setVisibility(View.VISIBLE);
             }
@@ -489,5 +490,9 @@ public class QuestionActivity extends AppCompatActivity {
     private void hideDialog(){
         if (dialog.isShowing())
             dialog.dismiss();
+    }
+
+    public void setRunning(boolean running) {
+        this.isRunning = running;
     }
 }

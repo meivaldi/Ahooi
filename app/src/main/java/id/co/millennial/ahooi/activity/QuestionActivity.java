@@ -66,6 +66,8 @@ public class QuestionActivity extends AppCompatActivity {
     private Thread tr;
     private List<Question> questionList;
 
+    private int INDEX = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +169,70 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
 
+        answer1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(INDEX < 9){
+                    user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
+                    INDEX++;
+                    poin.setText("" + user_point);
+                    startQuestion(INDEX);
+                } else {
+                    isRunning = false;
+                    point.setText("" + user_point);
+                    dialog.show();
+                }
+            }
+        });
+
+        answer2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(INDEX < 9){
+                    user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
+                    INDEX++;
+                    poin.setText("" + user_point);
+                    startQuestion(INDEX);
+                } else {
+                    isRunning = false;
+                    point.setText("" + user_point);
+                    dialog.show();
+                }
+            }
+        });
+
+        answer3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(INDEX < 9){
+                    user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
+                    INDEX++;
+                    poin.setText("" + user_point);
+                    startQuestion(INDEX);
+                } else {
+                    isRunning = false;
+                    point.setText("" + user_point);
+                    dialog.show();
+                }
+            }
+        });
+
+        answer4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(INDEX < 9){
+                    user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
+                    INDEX++;
+                    poin.setText("" + user_point);
+                    startQuestion(INDEX);
+                } else {
+                    isRunning = false;
+                    point.setText("" + user_point);
+                    dialog.show();
+                }
+            }
+        });
+
     }
 
     private void startQuestion(int i) {
@@ -180,18 +246,11 @@ public class QuestionActivity extends AppCompatActivity {
         c.setText(jb.get(2).getAnswer());
         d.setText(jb.get(3).getAnswer());
 
-        tr.start();
-
         checkAnswer();
     }
 
     private void checkAnswer() {
-        answer1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        width = 100;
     }
 
     private void loadQuestion() {
@@ -216,7 +275,6 @@ public class QuestionActivity extends AppCompatActivity {
                         boolean value;
 
                         JSONObject quest_obj;
-                        List<Answer> answerList = new ArrayList<>();
 
                         for(int i=0; i<question.length(); i++){
                             quest_obj = question.getJSONObject(i);
@@ -224,6 +282,7 @@ public class QuestionActivity extends AppCompatActivity {
                             poin = quest_obj.getString("poin");
                             answers = quest_obj.getJSONArray("jawaban");
 
+                            List<Answer> answerList = new ArrayList<>();
                             for(int j=0; j<answers.length(); j++){
                                 jawaban = answers.getJSONObject(j).getString("jawaban");
                                 value = answers.getJSONObject(j).getBoolean("status");
@@ -233,7 +292,8 @@ public class QuestionActivity extends AppCompatActivity {
                             questionList.add(new Question(pertanyaan, poin, answerList));
                         }
 
-                        startQuestion(0);
+                        startQuestion(INDEX);
+                        tr.start();
                     } else {
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),

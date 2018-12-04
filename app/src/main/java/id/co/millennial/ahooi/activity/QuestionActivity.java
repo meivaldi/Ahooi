@@ -136,6 +136,7 @@ public class QuestionActivity extends AppCompatActivity {
                     String email = user.get("email");
 
                     updatePoint(Integer.toString(user_point), email);
+                    finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Login dulu wak!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -187,7 +188,7 @@ public class QuestionActivity extends AppCompatActivity {
                             public void run() {
                                 end.start();
                                 point.setText(Integer.toString(user_point));
-                                dialog.show();
+                                showDialog();
                             }
                         });
                     }
@@ -210,12 +211,12 @@ public class QuestionActivity extends AppCompatActivity {
                         point.setText("" + user_point);
                         if(user_point == 100 || INDEX == 10)
                             ulangi.setVisibility(View.GONE);
-                        dialog.show();
+                        showDialog();
                     }
                 } else {
                     isRunning = false;
                     point.setText("" + user_point);
-                    dialog.show();
+                    showDialog();
                 }
             }
         });
@@ -235,12 +236,12 @@ public class QuestionActivity extends AppCompatActivity {
                         point.setText("" + user_point);
                         if(user_point == 100 || INDEX == 10)
                             ulangi.setVisibility(View.GONE);
-                        dialog.show();
+                        showDialog();
                     }
                 } else {
                     isRunning = false;
                     point.setText("" + user_point);
-                    dialog.show();
+                    showDialog();
                 }
             }
         });
@@ -260,12 +261,12 @@ public class QuestionActivity extends AppCompatActivity {
                         point.setText("" + user_point);
                         if(user_point == 100 || INDEX == 10)
                             ulangi.setVisibility(View.GONE);
-                        dialog.show();
+                        showDialog();
                     }
                 } else {
                     isRunning = false;
                     point.setText("" + user_point);
-                    dialog.show();
+                    showDialog();
                 }
             }
         });
@@ -285,12 +286,12 @@ public class QuestionActivity extends AppCompatActivity {
                         point.setText("" + user_point);
                         if(user_point == 100 || INDEX == 10)
                             ulangi.setVisibility(View.GONE);
-                        dialog.show();
+                        showDialog();
                     }
                 } else {
                     isRunning = false;
                     point.setText("" + user_point);
-                    dialog.show();
+                    showDialog();
                 }
             }
         });
@@ -358,7 +359,7 @@ public class QuestionActivity extends AppCompatActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                dialog.dismiss();
+                hideDialog();
                 user_point -= 30;
                 if(user_point < 0)
                     user_point = 0;
@@ -474,9 +475,19 @@ public class QuestionActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        dialog.dismiss();
+        hideDialog();
         end.stop();
         click.stop();
         finish();
+    }
+
+    private void showDialog() {
+        if (!dialog.isShowing())
+            dialog.show();
+    }
+
+    private void hideDialog(){
+        if (dialog.isShowing())
+            dialog.dismiss();
     }
 }

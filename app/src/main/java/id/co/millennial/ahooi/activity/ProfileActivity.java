@@ -38,16 +38,23 @@ public class ProfileActivity extends AppCompatActivity {
 
         userName = (TextView) findViewById(R.id.user_name);
         point = (TextView) findViewById(R.id.point);
-        point.setTypeface(typeface);
 
         session = new SessionManager(getApplicationContext());
         db = new SQLiteHandler(getApplicationContext());
 
+        if(!session.isLoggedIn()){
+            logoutUser();
+        }
+
         HashMap<String, String> user = db.getUserDetails();
-        String name = user.get("name");
+        String name = user.get("long_name");
+        String poen = user.get("poin");
 
         userName.setText(name);
         userName.setTypeface(typeface);
+
+        point.setText(poen + " Poen");
+        point.setTypeface(typeface);
 
         back = (RelativeLayout) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {

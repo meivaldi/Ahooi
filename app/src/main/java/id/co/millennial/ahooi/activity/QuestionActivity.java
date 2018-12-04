@@ -15,9 +15,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -45,7 +47,7 @@ public class QuestionActivity extends AppCompatActivity {
 
     private static final String TAG = QuestionActivity.class.getSimpleName();
 
-    private TextView poin, point, label, nama;
+    private TextView poin, point, label, nama, checkpoint;
     private ProgressBar progress;
     private Handler handler = new Handler();
     private Dialog dialog;
@@ -62,6 +64,7 @@ public class QuestionActivity extends AppCompatActivity {
     private LinearLayout answer1, answer2, answer3, answer4;
     private TextView a, b, c, d;
     private TextView question, question_point;
+    private RelativeLayout check;
 
     private Thread tr;
     private List<Question> questionList;
@@ -83,6 +86,11 @@ public class QuestionActivity extends AppCompatActivity {
 
         question = (TextView) findViewById(R.id.pertanyaan);
         question_point = (TextView) findViewById(R.id.question_point);
+        checkpoint = (TextView) findViewById(R.id.checkpoint);
+        checkpoint.setTypeface(typeface);
+
+        check = (RelativeLayout) findViewById(R.id.check);
+        check.setVisibility(View.GONE);
 
         answer1 = (LinearLayout) findViewById(R.id.answer1);
         answer2 = (LinearLayout) findViewById(R.id.answer2);
@@ -106,11 +114,34 @@ public class QuestionActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
+        session = new SessionManager(getApplicationContext());
+        db = new SQLiteHandler(getApplicationContext());
+
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        } else {
+            HashMap<String, String> user = db.getUserDetails();
+            String name = user.get("name");
+
+            nama = (TextView) findViewById(R.id.masok);
+            nama.setText(name);
+        }
+
         balek = (Button) dialog.findViewById(R.id.back);
         balek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                if(session.isLoggedIn()){
+                    HashMap<String, String> user = db.getUserDetails();
+                    String email = user.get("email");
+
+                    updatePoint(Integer.toString(user_point), email);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Login dulu wak!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    intent.putExtra("FLAG", true);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -124,18 +155,13 @@ public class QuestionActivity extends AppCompatActivity {
         TextView enceng = (TextView) dialog.findViewById(R.id.enceng);
         enceng.setTypeface(tf);
 
-        session = new SessionManager(getApplicationContext());
-        db = new SQLiteHandler(getApplicationContext());
-
-        if (!session.isLoggedIn()) {
-            logoutUser();
-        } else {
-            HashMap<String, String> user = db.getUserDetails();
-            String name = user.get("name");
-
-            nama = (TextView) findViewById(R.id.masok);
-            nama.setText(name);
-        }
+        ulangi = (Button) dialog.findViewById(R.id.restart);
+        ulangi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restart();
+            }
+        });
 
         tr = new Thread(new Runnable() {
             @Override
@@ -169,20 +195,6 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
 
-        ulangi = (Button) dialog.findViewById(R.id.restart);
-        ulangi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                isRunning = true;
-                user_point -= 30;
-                if(user_point < 0)
-                    user_point = 0;
-
-                poin.setText(user_point + "");
-            }
-        });
-
         answer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,6 +203,7 @@ public class QuestionActivity extends AppCompatActivity {
                     INDEX++;
                     poin.setText("" + user_point);
                     if(INDEX < 10){
+                        check.setVisibility(View.GONE);
                         startQuestion(INDEX);
                     } else {
                         isRunning = false;
@@ -215,6 +228,7 @@ public class QuestionActivity extends AppCompatActivity {
                     INDEX++;
                     poin.setText("" + user_point);
                     if(INDEX < 10){
+                        check.setVisibility(View.GONE);
                         startQuestion(INDEX);
                     } else {
                         isRunning = false;
@@ -239,6 +253,7 @@ public class QuestionActivity extends AppCompatActivity {
                     INDEX++;
                     poin.setText("" + user_point);
                     if(INDEX < 10){
+                        check.setVisibility(View.GONE);
                         startQuestion(INDEX);
                     } else {
                         isRunning = false;
@@ -263,6 +278,7 @@ public class QuestionActivity extends AppCompatActivity {
                     INDEX++;
                     poin.setText("" + user_point);
                     if(INDEX < 10){
+                        check.setVisibility(View.GONE);
                         startQuestion(INDEX);
                     } else {
                         isRunning = false;
@@ -279,6 +295,80 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void updatePoint(final String point, final String email) {
+        String tag_string_req = "req_login";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_UPDATE_POINT, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Get Response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    if (!error) {
+                        HashMap<String, String> user = db.getUserDetails();
+                        String email = user.get("email");
+                        int pt = Integer.valueOf(user.get("poin"));
+                        int poen = Integer.valueOf(point);
+
+                        db.updateValue("poin", email, Integer.toString((poen) + pt));
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Get Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("point", point);
+                params.put("email", email);
+
+                return params;
+            }
+
+        };
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void restart() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+                user_point -= 30;
+                if(user_point < 0)
+                    user_point = 0;
+
+                width = 100;
+                isRunning = true;
+                poin.setText(user_point + "");
+                check.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void startQuestion(int i) {
@@ -376,7 +466,6 @@ public class QuestionActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        dialog.dismiss();
         end.stop();
         click.stop();
     }

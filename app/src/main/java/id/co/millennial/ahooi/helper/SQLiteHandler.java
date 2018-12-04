@@ -25,7 +25,9 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
+    private static final String KEY_LONG_NAME = "long_name";
     private static final String KEY_EMAIL = "email";
+    private static final String KEY_POIN = "poin";
     private static final String KEY_CREATED_AT = "created_at";
 
     public SQLiteHandler(Context context) {
@@ -36,8 +38,9 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_USER + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_EMAIL + " TEXT UNIQUE," + KEY_CREATED_AT + " TEXT" + ")";
+                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_LONG_NAME + " TEXT,"
+                + KEY_EMAIL + " TEXT UNIQUE," + KEY_POIN + " TEXT UNIQUE,"
+                + KEY_CREATED_AT + " TEXT" + ")";
         db.execSQL(CREATE_LOGIN_TABLE);
 
         Log.d(TAG, "Database tables created");
@@ -51,19 +54,29 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addUser(String id, String name, String email, String created_at) {
+    public void addUser(String id, String name, String long_name, String email, String poin, String created_at) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_ID, id);
         values.put(KEY_NAME, name);
+        values.put(KEY_LONG_NAME, long_name);
         values.put(KEY_EMAIL, email);
+        values.put(KEY_POIN, poin);
         values.put(KEY_CREATED_AT, created_at);
 
         long register_id = db.insert(TABLE_USER, null, values);
         db.close();
 
         Log.d(TAG, "New user inserted into sqlite: " + register_id);
+    }
+
+    public void updateValue(String column, String email, String value){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "UPDATE " + TABLE_USER + " SET " + column + " = '"
+                + value + "'";
+
+        db.execSQL(sql);
     }
 
     public HashMap<String, String> getUserDetails() {
@@ -77,8 +90,10 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             user.put("id", cursor.getString(0));
             user.put("name", cursor.getString(1));
-            user.put("email", cursor.getString(2));
-            user.put("created_at", cursor.getString(3));
+            user.put("long_name", cursor.getString(2));
+            user.put("email", cursor.getString(3));
+            user.put("poin", cursor.getString(4));
+            user.put("created_at", cursor.getString(5));
         }
         cursor.close();
         db.close();

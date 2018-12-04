@@ -140,16 +140,22 @@ public class LoginActivity extends AppCompatActivity {
 
                         JSONObject user = jObj.getJSONObject("user");
                         String name = user.getString("name");
+                        String long_name = user.getString("long_name");
+                        String poin = user.getString("poin");
                         String email = user.getString("email");
                         String created_at = user
                                 .getString("created_at");
 
-                        db.addUser(id, name, email, created_at);
+                        db.addUser(id, name, long_name, email, poin, created_at);
 
-                        Intent intent = new Intent(LoginActivity.this,
-                                MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if(getIntent().getBooleanExtra("FLAG", false)){
+                            finish();
+                        } else {
+                            Intent intent = new Intent(LoginActivity.this,
+                                    MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     } else {
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),

@@ -9,5 +9,6 @@ public class AppConfig {
     public static String URL_LOGIN = "https://millennial.co.id/ahooi/android/login.php";
     public static String URL_REGISTER = "https://millennial.co.id/ahooi/android/register.php";
     public static String URL_GET_QUESTION = "https://millennial.co.id/ahooi/android/get_question.php";
+    public static String URL_GET_RANDOM_QUESTION = "https://millennial.co.id/ahooi/android/get_random_question.php";
 
 }

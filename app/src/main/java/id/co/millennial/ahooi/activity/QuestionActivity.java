@@ -27,7 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -50,23 +52,19 @@ public class QuestionActivity extends AppCompatActivity {
     private Button balek;
 
     private int width = 100;
+    private int user_point = 0;
+    private boolean isRunning = true;
 
     private SQLiteHandler db;
     private SessionManager session;
     private MediaPlayer end, click;
 
-    private int MIN = 1;
-    private int MAX = 10;
-    private int user_point = 0;
-
     private LinearLayout answer1, answer2, answer3, answer4;
     private TextView a, b, c, d;
     private TextView question, question_point;
 
-    private Question pertanyaan;
-    private Answer[] answer;
     private Thread tr;
-    private boolean isRunning = true;
+    private List<Question> questionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +74,10 @@ public class QuestionActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_question);
 
+        loadQuestion();
+
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
+        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/GOODDC_.TTF");
 
         question = (TextView) findViewById(R.id.pertanyaan);
         question_point = (TextView) findViewById(R.id.question_point);
@@ -116,7 +117,7 @@ public class QuestionActivity extends AppCompatActivity {
         point.setTypeface(typeface);
         label.setTypeface(typeface);
 
-        Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/GOODDC_.TTF");
+        questionList = new ArrayList<>();
 
         TextView enceng = (TextView) dialog.findViewById(R.id.enceng);
         enceng.setTypeface(tf);
@@ -166,105 +167,38 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
 
-        Random r = new Random();
-        int id = r.nextInt(MAX - MIN + 1) + MIN;
+    }
 
+    private void startQuestion(int i) {
+        Question qs = questionList.get(i);
+        List<Answer> jb = qs.getAnswerList();
+
+        question.setText(qs.getQuestion());
+        question_point.setText(qs.getPoint());
+        a.setText(jb.get(0).getAnswer());
+        b.setText(jb.get(1).getAnswer());
+        c.setText(jb.get(2).getAnswer());
+        d.setText(jb.get(3).getAnswer());
+
+        tr.start();
+
+        checkAnswer();
+    }
+
+    private void checkAnswer() {
         answer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isRunning = false;
-                click.start();
 
-                if(answer[0].isValue()){
-                    benar(answer1);
-                    refresh(answer1);
-                } else {
-                    answer1.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.false_answer));
-                    point.setText(Integer.toString(user_point));
-                    dialog.show();
-                }
             }
         });
-
-        answer2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isRunning = false;
-                click.start();
-
-                if(answer[1].isValue()){
-                    benar(answer2);
-                    refresh(answer2);
-                } else {
-                    answer2.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.false_answer));
-                    point.setText(Integer.toString(user_point));
-                    dialog.show();
-                }
-            }
-        });
-
-        answer3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isRunning = false;
-                click.start();
-
-                if(answer[2].isValue()){
-                    benar(answer3);
-                    refresh(answer3);
-                } else {
-                    answer3.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.false_answer));
-                    point.setText(Integer.toString(user_point));
-                    dialog.show();
-                }
-            }
-        });
-
-        answer4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isRunning = false;
-                click.start();
-
-                if(answer[3].isValue()){
-                    benar(answer4);
-                    refresh(answer4);
-                } else {
-                    answer4.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.false_answer));
-                    point.setText(Integer.toString(user_point));
-                    dialog.show();
-                }
-            }
-        });
-
-        loadQuestion(Integer.toString(id));
     }
 
-    private void refresh(LinearLayout answer) {
-        answer.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_answer));
-        answer1.setClickable(true);
-        answer2.setClickable(true);
-        answer3.setClickable(true);
-        answer4.setClickable(true);
-        isRunning = true;
-        width = 100;
-    }
-
-    private void benar(LinearLayout answer) {
-        user_point += Integer.valueOf(pertanyaan.getPoint());
-        poin.setText(Integer.toString(user_point));
-        answer.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.right_answer));
-        answer1.setClickable(false);
-        answer2.setClickable(false);
-        answer3.setClickable(false);
-        answer4.setClickable(false);
-    }
-
-    private void loadQuestion(final String id) {
+    private void loadQuestion() {
         String tag_string_req = "req_login";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_GET_QUESTION, new Response.Listener<String>() {
+                AppConfig.URL_GET_RANDOM_QUESTION, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -275,25 +209,31 @@ public class QuestionActivity extends AppCompatActivity {
                     boolean error = jObj.getBoolean("error");
 
                     if (!error) {
-                        answer = new Answer[4];
-                        JSONArray jawaban = jObj.getJSONArray("jawaban");
-                        JSONArray status = jObj.getJSONArray("status");
-                        int size = jawaban.length();
+                        JSONArray question = jObj.getJSONArray("pertanyaan");
+                        JSONArray answers;
 
-                        for(int i=0; i<size; i++){
-                            answer[i] = new Answer(jawaban.getString(i), status.getBoolean(i));
+                        String pertanyaan, poin, jawaban;
+                        boolean value;
+
+                        JSONObject quest_obj;
+                        List<Answer> answerList = new ArrayList<>();
+
+                        for(int i=0; i<question.length(); i++){
+                            quest_obj = question.getJSONObject(i);
+                            pertanyaan = quest_obj.getString("pertanyaan");
+                            poin = quest_obj.getString("poin");
+                            answers = quest_obj.getJSONArray("jawaban");
+
+                            for(int j=0; j<answers.length(); j++){
+                                jawaban = answers.getJSONObject(j).getString("jawaban");
+                                value = answers.getJSONObject(j).getBoolean("status");
+                                answerList.add(new Answer(jawaban, value));
+                            }
+
+                            questionList.add(new Question(pertanyaan, poin, answerList));
                         }
 
-                        pertanyaan = new Question(jObj.getString("pertanyaan"), jObj.getString("point"), answer);
-
-                        question.setText(pertanyaan.getQuestion());
-                        question_point.setText(pertanyaan.getPoint());
-                        a.setText(pertanyaan.getAnswer(0).getAnswer());
-                        b.setText(pertanyaan.getAnswer(1).getAnswer());
-                        c.setText(pertanyaan.getAnswer(2).getAnswer());
-                        d.setText(pertanyaan.getAnswer(3).getAnswer());
-
-                        tr.start();
+                        startQuestion(0);
                     } else {
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
@@ -313,17 +253,7 @@ public class QuestionActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("id", id);
-
-                return params;
-            }
-
-        };
+        });
 
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }

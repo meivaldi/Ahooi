@@ -1,5 +1,7 @@
 package id.co.millennial.ahooi.model;
 
+import java.util.List;
+
 /**
  * Created by root on 03/12/18.
  */
@@ -7,12 +9,12 @@ package id.co.millennial.ahooi.model;
 public class Question {
 
     private String question, point;
-    private Answer[] answer;
+    private List<Answer> answerList;
 
-    public Question(String question, String point, Answer[] answer) {
+    public Question(String question, String point, List<Answer> answerList) {
         this.question = question;
         this.point = point;
-        this.answer = answer;
+        this.answerList = answerList;
     }
 
     public String getQuestion() {
@@ -31,15 +33,11 @@ public class Question {
         this.point = point;
     }
 
-    public Answer[] getAnswer() {
-        return answer;
+    public List<Answer> getAnswerList() {
+        return answerList;
     }
 
-    public Answer getAnswer(int i){
-        return answer[i];
-    }
-
-    public void setAnswer(Answer[] answer) {
-        this.answer = answer;
+    public void setAnswerList(List<Answer> answerList) {
+        this.answerList = answerList;
     }
 }

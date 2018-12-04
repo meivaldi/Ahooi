@@ -10,4 +10,5 @@
 
     <color name="benar">#21cf55</color>
     <color name="salah">#f54750</color>
+    <color name="default_color">#2d2a2a</color>
 </resources>

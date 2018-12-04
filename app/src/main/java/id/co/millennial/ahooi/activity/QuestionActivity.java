@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -156,6 +157,7 @@ public class QuestionActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 end.start();
+                                point.setText(Integer.toString(user_point));
                                 dialog.show();
                             }
                         });
@@ -175,9 +177,9 @@ public class QuestionActivity extends AppCompatActivity {
 
                 if(answer[0].isValue()){
                     benar(answer1);
-                    refresh();
+                    refresh(answer1);
                 } else {
-                    answer1.setBackgroundColor(getResources().getColor(R.color.salah));
+                    answer1.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.false_answer));
                     point.setText(Integer.toString(user_point));
                     dialog.show();
                 }
@@ -192,8 +194,9 @@ public class QuestionActivity extends AppCompatActivity {
 
                 if(answer[1].isValue()){
                     benar(answer2);
+                    refresh(answer2);
                 } else {
-                    answer2.setBackgroundColor(getResources().getColor(R.color.salah));
+                    answer2.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.false_answer));
                     point.setText(Integer.toString(user_point));
                     dialog.show();
                 }
@@ -208,8 +211,9 @@ public class QuestionActivity extends AppCompatActivity {
 
                 if(answer[2].isValue()){
                     benar(answer3);
+                    refresh(answer3);
                 } else {
-                    answer3.setBackgroundColor(getResources().getColor(R.color.salah));
+                    answer3.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.false_answer));
                     point.setText(Integer.toString(user_point));
                     dialog.show();
                 }
@@ -224,8 +228,9 @@ public class QuestionActivity extends AppCompatActivity {
 
                 if(answer[3].isValue()){
                     benar(answer4);
+                    refresh(answer4);
                 } else {
-                    answer4.setBackgroundColor(getResources().getColor(R.color.salah));
+                    answer4.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.false_answer));
                     point.setText(Integer.toString(user_point));
                     dialog.show();
                 }
@@ -235,13 +240,20 @@ public class QuestionActivity extends AppCompatActivity {
         loadQuestion(Integer.toString(id));
     }
 
-    private void refresh() {
+    private void refresh(LinearLayout answer) {
+        answer.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.rounded_answer));
+        answer1.setClickable(true);
+        answer2.setClickable(true);
+        answer3.setClickable(true);
+        answer4.setClickable(true);
+        isRunning = true;
+        width = 100;
     }
 
     private void benar(LinearLayout answer) {
         user_point += Integer.valueOf(pertanyaan.getPoint());
         poin.setText(Integer.toString(user_point));
-        answer.setBackgroundColor(getResources().getColor(R.color.benar));
+        answer.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.right_answer));
         answer1.setClickable(false);
         answer2.setClickable(false);
         answer3.setClickable(false);

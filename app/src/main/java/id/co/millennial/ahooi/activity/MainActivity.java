@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         click = MediaPlayer.create(this, R.raw.click);
+        menu = MediaPlayer.create(this, R.raw.gamemenu);
+        menu.start();
+        menu.setLooping(true);
 
         login = (RelativeLayout) findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 click.start();
+                menu.stop();
                 startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
             }
         });
@@ -122,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         dialog.dismiss();
+        menu.stop();
         finish();
     }
 

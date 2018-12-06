@@ -43,7 +43,7 @@ import id.co.millennial.ahooi.helper.SessionManager;
 import id.co.millennial.ahooi.model.Answer;
 import id.co.millennial.ahooi.model.Question;
 
-public class QuestionActivity extends AppCompatActivity {
+public class QuestionActivity extends AppCompatActivity implements Runnable {
 
     private static final String TAG = QuestionActivity.class.getSimpleName();
 
@@ -59,14 +59,13 @@ public class QuestionActivity extends AppCompatActivity {
 
     private SQLiteHandler db;
     private SessionManager session;
-    private MediaPlayer end, click;
+    private MediaPlayer end, click, music;
 
     private LinearLayout answer1, answer2, answer3, answer4;
     private TextView a, b, c, d;
     private TextView question, question_point;
     private RelativeLayout check;
 
-    private Thread tr;
     private List<Question> questionList;
 
     private int INDEX = 0;
@@ -104,6 +103,9 @@ public class QuestionActivity extends AppCompatActivity {
 
         end = MediaPlayer.create(this, R.raw.game_over);
         click = MediaPlayer.create(this, R.raw.click);
+        music = MediaPlayer.create(this, R.raw.inquestion);
+        music.start();
+        music.setLooping(true);
 
         progress = (ProgressBar) findViewById(R.id.progress);
         poin = (TextView) findViewById(R.id.poin);
@@ -162,38 +164,6 @@ public class QuestionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 restart();
-            }
-        });
-
-        tr = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(width > 0 && isRunning){
-                    width -= 1;
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progress.setProgress(width);
-                        }
-                    });
-
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        Toast.makeText(getApplicationContext(), "Bentar wak", Toast.LENGTH_SHORT).show();
-                    }
-
-                    if(width == 0){
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                end.start();
-                                point.setText(Integer.toString(user_point));
-                                showDialog();
-                            }
-                        });
-                    }
-                }
             }
         });
 
@@ -365,12 +335,14 @@ public class QuestionActivity extends AppCompatActivity {
                 if(user_point < 0)
                     user_point = 0;
 
-                width = 100;
-                setRunning(true);
                 poin.setText(user_point + "");
                 check.setVisibility(View.VISIBLE);
             }
         });
+
+        width = 100;
+        setRunning(true);
+        new Thread(this).start();
     }
 
     private void startQuestion(int i) {
@@ -431,7 +403,7 @@ public class QuestionActivity extends AppCompatActivity {
                         }
 
                         startQuestion(INDEX);
-                        tr.start();
+                        new Thread(QuestionActivity.this).start();
                     } else {
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
@@ -468,6 +440,7 @@ public class QuestionActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        music.stop();
         end.stop();
         click.stop();
     }
@@ -477,6 +450,7 @@ public class QuestionActivity extends AppCompatActivity {
         super.onBackPressed();
 
         hideDialog();
+        music.stop();
         end.stop();
         click.stop();
         finish();
@@ -485,14 +459,50 @@ public class QuestionActivity extends AppCompatActivity {
     private void showDialog() {
         if (!dialog.isShowing())
             dialog.show();
+
+        music.stop();
+        end.start();
     }
 
     private void hideDialog(){
         if (dialog.isShowing())
             dialog.dismiss();
+
+        music.start();
+        end.stop();
     }
 
     public void setRunning(boolean running) {
         this.isRunning = running;
+    }
+
+    @Override
+    public void run() {
+        while(width > 0 && isRunning){
+            width -= 1;
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    progress.setProgress(width);
+                }
+            });
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Toast.makeText(getApplicationContext(), "Bentar wak", Toast.LENGTH_SHORT).show();
+            }
+
+            if(width == 0){
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        end.start();
+                        point.setText(Integer.toString(user_point));
+                        showDialog();
+                    }
+                });
+            }
+        }
     }
 }

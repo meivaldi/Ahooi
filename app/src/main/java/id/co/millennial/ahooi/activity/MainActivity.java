@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private Dialog dialog;
     private TextView title, nama;
     private ImageView notifikasi;
-    private MediaPlayer click;
+    private MediaPlayer click, menu;
 
     private SQLiteHandler db;
     private SessionManager session;

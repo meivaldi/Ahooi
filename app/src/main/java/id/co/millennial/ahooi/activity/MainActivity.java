@@ -117,6 +117,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(!session.isLoggedIn()){
+            nama = (TextView) findViewById(R.id.masok);
+            nama.setText("Masok");
+        } else {
+            HashMap<String, String> user = db.getUserDetails();
+            String name = user.get("name");
+
+            nama = (TextView) findViewById(R.id.masok);
+            nama.setText(name);
+        }
+    }
+
     private void logoutUser() {
         session.setLogin(false);
         db.deleteUsers();

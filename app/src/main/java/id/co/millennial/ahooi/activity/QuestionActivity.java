@@ -2,7 +2,11 @@ package id.co.millennial.ahooi.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -180,6 +184,18 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
+                    music.release();
+
+                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
+                    right.start();
+
+                    while (right.isPlaying()){
+
+                    }
+                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
+                    music.start();
+                    right.release();
+
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
                         startQuestion(INDEX);
@@ -205,6 +221,18 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
+                    music.release();
+
+                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
+                    right.start();
+
+                    while (right.isPlaying()){
+                        startAnimation(answer2);
+                    }
+                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
+                    music.start();
+                    right.release();
+
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
                         startQuestion(INDEX);
@@ -230,6 +258,18 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
+                    music.release();
+
+                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
+                    right.start();
+
+                    while (right.isPlaying()){
+                        startAnimation(answer3);
+                    }
+                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
+                    music.start();
+                    right.release();
+
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
                         startQuestion(INDEX);
@@ -255,6 +295,17 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
+                    music.release();
+
+                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
+                    right.start();
+
+                    while (right.isPlaying()){
+                        startAnimation(answer4);
+                    }
+                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
+                    music.start();
+                    right.release();
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
                         startQuestion(INDEX);
@@ -446,9 +497,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
     protected void onPause() {
         super.onPause();
 
-        music.release();
         end.release();
-        click.release();
         click.release();
     }
 
@@ -511,5 +560,37 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 });
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(!session.isLoggedIn()){
+            nama = (TextView) findViewById(R.id.masok);
+            nama.setText("Masok");
+        } else {
+            HashMap<String, String> user = db.getUserDetails();
+            String name = user.get("name");
+
+            nama = (TextView) findViewById(R.id.masok);
+            nama.setText(name);
+        }
+    }
+
+    protected void startAnimation(LinearLayout layout){
+        final AnimationDrawable drawable = new AnimationDrawable();
+
+        drawable.addFrame(new ColorDrawable(getResources().getColor(R.color.default_color)), 400);
+        drawable.addFrame(new ColorDrawable(getResources().getColor(R.color.benar)), 400);
+        drawable.setOneShot(false);
+
+        layout.setBackgroundDrawable(drawable);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawable.start();
+            }
+        }, 100);
     }
 }

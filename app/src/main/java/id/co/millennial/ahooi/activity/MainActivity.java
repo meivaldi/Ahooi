@@ -43,10 +43,14 @@ public class MainActivity extends AppCompatActivity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
 
         db = new SQLiteHandler(getApplicationContext());
-
         session = new SessionManager(getApplicationContext());
 
         nama = (TextView) findViewById(R.id.masok);
+        login = (RelativeLayout) findViewById(R.id.login);
+        notifikasi = (ImageView) findViewById(R.id.notifikasi);
+        main = (Button) findViewById(R.id.main);
+        hadiah = (Button) findViewById(R.id.hadiah);
+        keluar = (Button) findViewById(R.id.keluar);
 
         if (!session.isLoggedIn()) {
             logoutUser();
@@ -58,10 +62,14 @@ public class MainActivity extends AppCompatActivity {
 
         click = MediaPlayer.create(this, R.raw.click);
         menu = MediaPlayer.create(this, R.raw.gamemenu);
-        menu.start();
+        menu.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                menu.start();
+            }
+        });
         menu.setLooping(true);
 
-        login = (RelativeLayout) findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,11 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 click.start();
             }
         });
-
-        notifikasi = (ImageView) findViewById(R.id.notifikasi);
-        main = (Button) findViewById(R.id.main);
-        hadiah = (Button) findViewById(R.id.hadiah);
-        keluar = (Button) findViewById(R.id.keluar);
 
         main.setTypeface(typeface);
         hadiah.setTypeface(typeface);
@@ -91,8 +94,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 click.start();
-                menu.stop();
                 startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
+                menu.release();
+                finish();
             }
         });
 
@@ -126,8 +130,6 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
 
         dialog.dismiss();
-        menu.stop();
-        finish();
     }
 
 }

@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +105,12 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         end = MediaPlayer.create(this, R.raw.game_over);
         click = MediaPlayer.create(this, R.raw.click);
         music = MediaPlayer.create(this, R.raw.inquestion);
-        music.start();
+        music.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                music.start();
+            }
+        });
         music.setLooping(true);
 
         progress = (ProgressBar) findViewById(R.id.progress);
@@ -138,7 +144,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     String email = user.get("email");
 
                     updatePoint(Integer.toString(user_point), email);
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Login dulu wak!", Toast.LENGTH_SHORT).show();
@@ -330,7 +335,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                hideDialog();
                 user_point -= 30;
                 if(user_point < 0)
                     user_point = 0;
@@ -340,6 +344,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             }
         });
 
+        hideDialog();
         width = 100;
         setRunning(true);
         new Thread(this).start();
@@ -440,9 +445,10 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
     protected void onPause() {
         super.onPause();
 
-        music.stop();
-        end.stop();
-        click.stop();
+        hideDialog();
+        music.release();
+        end.release();
+        click.release();
     }
 
     @Override
@@ -450,9 +456,9 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         super.onBackPressed();
 
         hideDialog();
-        music.stop();
-        end.stop();
-        click.stop();
+        music.release();
+        end.release();
+        click.release();
         finish();
     }
 
@@ -460,14 +466,16 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         if (!dialog.isShowing())
             dialog.show();
 
-        music.stop();
+        end = MediaPlayer.create(this, R.raw.game_over);
         end.start();
+        music.release();
     }
 
     private void hideDialog(){
         if (dialog.isShowing())
             dialog.dismiss();
 
+        music = MediaPlayer.create(this, R.raw.inquestion);
         music.start();
         end.stop();
     }
@@ -497,7 +505,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        end.start();
                         point.setText(Integer.toString(user_point));
                         showDialog();
                     }

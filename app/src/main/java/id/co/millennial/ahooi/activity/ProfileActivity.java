@@ -2,6 +2,7 @@ package id.co.millennial.ahooi.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +23,7 @@ public class ProfileActivity extends AppCompatActivity {
     private RelativeLayout back;
     private Button logout;
     private TextView userName, point;
+    private MediaPlayer click;
 
     private SQLiteHandler db;
     private SessionManager session;
@@ -56,11 +58,13 @@ public class ProfileActivity extends AppCompatActivity {
         point.setText(poen + " Poen");
         point.setTypeface(typeface);
 
+        click = MediaPlayer.create(this, R.raw.click);
         back = (RelativeLayout) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                click.start();
+                finish();
             }
         });
 
@@ -69,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                click.start();
                 logoutUser();
             }
         });
@@ -78,13 +83,14 @@ public class ProfileActivity extends AppCompatActivity {
         session.setLogin(false);
         db.deleteUsers();
 
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
+        click.release();
         finish();
     }
 }

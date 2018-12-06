@@ -151,6 +151,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     intent.putExtra("FLAG", true);
                     startActivity(intent);
                 }
+                music.release();
             }
         });
 
@@ -445,9 +446,9 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
     protected void onPause() {
         super.onPause();
 
-        hideDialog();
         music.release();
         end.release();
+        click.release();
         click.release();
     }
 
@@ -455,7 +456,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
     public void onBackPressed() {
         super.onBackPressed();
 
-        hideDialog();
         music.release();
         end.release();
         click.release();
@@ -477,7 +477,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
         music = MediaPlayer.create(this, R.raw.inquestion);
         music.start();
-        end.stop();
+        end.release();
     }
 
     public void setRunning(boolean running) {

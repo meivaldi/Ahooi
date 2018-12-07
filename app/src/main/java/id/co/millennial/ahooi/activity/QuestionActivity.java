@@ -179,6 +179,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(0).isValue()){
+                    width = 100;
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
@@ -217,6 +218,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(1).isValue()){
+                    width = 100;
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
@@ -294,6 +296,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(3).isValue()){
+                    width = 100;
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);

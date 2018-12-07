@@ -2,6 +2,7 @@ package id.co.millennial.ahooi.activity;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ public class HadiahActivity extends AppCompatActivity {
     private Button ambil;
     private TextView point, title, price_name;
     private RelativeLayout back;
+    private MediaPlayer click;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +41,20 @@ public class HadiahActivity extends AppCompatActivity {
         title.setTypeface(typeface);
         price_name.setTypeface(typeface);
 
+        click = MediaPlayer.create(this, R.raw.click);
+
+        ambil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                click.start();
+            }
+        });
+
         back = (RelativeLayout) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                click.start();
                 finish();
             }
         });
@@ -51,6 +63,7 @@ public class HadiahActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        click.release();
 
         finish();
     }
@@ -58,6 +71,7 @@ public class HadiahActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        click.release();
 
         finish();
     }

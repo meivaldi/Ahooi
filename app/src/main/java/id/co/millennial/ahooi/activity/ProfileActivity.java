@@ -80,6 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void logoutUser() {
+        click.start();
         session.setLogin(false);
         db.deleteUsers();
 

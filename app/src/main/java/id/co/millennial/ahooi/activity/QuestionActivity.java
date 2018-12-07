@@ -180,6 +180,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(0).isValue()){
                     width = 100;
+                    click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
@@ -219,6 +220,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(1).isValue()){
                     width = 100;
+                    click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
@@ -258,6 +260,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(2).isValue()){
                     width = 100;
+                    click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
@@ -297,6 +300,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(3).isValue()){
                     width = 100;
+                    click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
@@ -330,6 +334,20 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             }
         });
 
+    }
+
+    private void disableClick() {
+        answer1.setClickable(false);
+        answer2.setClickable(false);
+        answer3.setClickable(false);
+        answer4.setClickable(false);
+    }
+
+    private void enableClick() {
+        answer1.setClickable(true);
+        answer2.setClickable(true);
+        answer3.setClickable(true);
+        answer4.setClickable(true);
     }
 
     private void updatePoint(final String point, final String email) {

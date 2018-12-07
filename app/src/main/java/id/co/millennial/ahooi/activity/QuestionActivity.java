@@ -49,7 +49,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
     private TextView poin, point, label, nama, checkpoint;
     private ProgressBar progress;
     private Handler handler = new Handler();
-    private Handler myHandler;
     private Dialog dialog;
     private Button balek, ulangi;
 
@@ -77,8 +76,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_question);
-
-        myHandler = new Handler();
 
         loadQuestion();
 
@@ -186,16 +183,25 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     poin.setText("" + user_point);
                     music.release();
 
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Benar", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                     MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
                     right.start();
 
-                    while (right.isPlaying()){
-
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
 
+                    right.release();
                     music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
                     music.start();
-                    right.release();
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);

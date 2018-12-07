@@ -108,6 +108,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        keluar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menu.release();
+                finish();
+            }
+        });
+
         notifikasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

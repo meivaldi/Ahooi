@@ -2,14 +2,11 @@ package id.co.millennial.ahooi.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -33,12 +29,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import id.co.millennial.ahooi.R;
 import id.co.millennial.ahooi.app.AppConfig;
@@ -55,6 +49,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
     private TextView poin, point, label, nama, checkpoint;
     private ProgressBar progress;
     private Handler handler = new Handler();
+    private Handler myHandler;
     private Dialog dialog;
     private Button balek, ulangi;
 
@@ -82,6 +77,8 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_question);
+
+        myHandler = new Handler();
 
         loadQuestion();
 
@@ -148,6 +145,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     String email = user.get("email");
 
                     updatePoint(Integer.toString(user_point), email);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Login dulu wak!", Toast.LENGTH_SHORT).show();
@@ -192,6 +190,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     while (right.isPlaying()){
 
                     }
+
                     music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
                     music.start();
                     right.release();
@@ -227,8 +226,9 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     right.start();
 
                     while (right.isPlaying()){
-                        startAnimation(answer2);
+
                     }
+
                     music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
                     music.start();
                     right.release();
@@ -255,6 +255,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(2).isValue()){
+                    width = 100;
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
@@ -264,8 +265,9 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     right.start();
 
                     while (right.isPlaying()){
-                        startAnimation(answer3);
+
                     }
+
                     music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
                     music.start();
                     right.release();
@@ -297,12 +299,13 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     poin.setText("" + user_point);
                     music.release();
 
-                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
+                    final MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
                     right.start();
 
                     while (right.isPlaying()){
-                        startAnimation(answer4);
+
                     }
+
                     music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
                     music.start();
                     right.release();
@@ -347,7 +350,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                         int poen = Integer.valueOf(point);
 
                         db.updateValue("poin", email, Integer.toString((poen) + pt));
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     } else {
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),

@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -181,27 +182,42 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
-                    music.release();
 
-                    handler.post(new Runnable() {
+                    new AsyncTask<Void, Void, Void>() {
+
                         @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(), "Benar", Toast.LENGTH_SHORT).show();
+                        protected void onPostExecute(Void result) {
+                            Toast toast2 = Toast.makeText(getApplicationContext(), "Sleep completed",
+                                    Toast.LENGTH_SHORT);
+                            toast2.show();
                         }
-                    });
 
-                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
-                    right.start();
+                        @Override
+                        protected void onPreExecute() {
+                            Toast toast1 = Toast.makeText(getApplicationContext(), "Service Started",
+                                    Toast.LENGTH_SHORT);
+                            toast1.show();
+                        }
 
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                        @Override
+                        protected Void doInBackground(Void... params) {
+                            // Try to sleep for roughly 2 seconds
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(2000);
+                                    } catch (InterruptedException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                            return null;
 
-                    right.release();
-                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
-                    music.start();
+                        }
+
+                    }.execute();
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);

@@ -147,7 +147,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         balek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(session.isLoggedIn()){
+                if (session.isLoggedIn()) {
                     HashMap<String, String> user = db.getUserDetails();
                     String email = user.get("email");
 
@@ -185,29 +185,15 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         answer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(questionList.get(INDEX).getAnswerList().get(0).isValue()){
+                answer1.setBackgroundDrawable(getResources().getDrawable(R.drawable.right_answer));
+                freeze();
+                if (questionList.get(INDEX).getAnswerList().get(0).isValue()) {
                     right = true;
                     click.start();
-                    user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
-                    INDEX++;
-                    poin.setText("" + user_point);
 
-                    benar.show();
-                    startAnimation(answer1, true);
-
-                    if(INDEX < 10){
-                        check.setVisibility(View.GONE);
-                    } else {
-                        setRunning(false);
-                        point.setText("" + user_point);
-                        if(user_point == 100 || INDEX == 10)
-                            ulangi.setVisibility(View.GONE);
-                        showDialog();
-                    }
+                    check.setVisibility(View.GONE);
                 } else {
-                    setRunning(false);
-                    point.setText("" + user_point);
-                    showDialog();
+                    right = false;
                 }
             }
         });
@@ -215,29 +201,16 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         answer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(questionList.get(INDEX).getAnswerList().get(1).isValue()){
+                answer2.setBackgroundDrawable(getResources().getDrawable(R.drawable.right_answer));
+                freeze();
+                if (questionList.get(INDEX).getAnswerList().get(1).isValue()) {
                     right = true;
                     click.start();
-                    user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
-                    INDEX++;
-                    poin.setText("" + user_point);
 
-                    benar.show();
-                    startAnimation(answer2, true);
+                    check.setVisibility(View.GONE);
 
-                    if(INDEX < 10){
-                        check.setVisibility(View.GONE);
-                    } else {
-                        setRunning(false);
-                        point.setText("" + user_point);
-                        if(user_point == 100 || INDEX == 10)
-                            ulangi.setVisibility(View.GONE);
-                        showDialog();
-                    }
                 } else {
-                    setRunning(false);
-                    point.setText("" + user_point);
-                    showDialog();
+                    right = false;
                 }
             }
         });
@@ -245,29 +218,16 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         answer3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(questionList.get(INDEX).getAnswerList().get(2).isValue()){
+                answer3.setBackgroundDrawable(getResources().getDrawable(R.drawable.right_answer));
+                freeze();
+                if (questionList.get(INDEX).getAnswerList().get(2).isValue()) {
                     right = true;
                     click.start();
-                    user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
-                    INDEX++;
-                    poin.setText("" + user_point);
 
-                    benar.show();
-                    startAnimation(answer3, true);
+                    check.setVisibility(View.GONE);
 
-                    if(INDEX < 10){
-                        check.setVisibility(View.GONE);
-                    } else {
-                        setRunning(false);
-                        point.setText("" + user_point);
-                        if(user_point == 100 || INDEX == 10)
-                            ulangi.setVisibility(View.GONE);
-                        showDialog();
-                    }
                 } else {
-                    setRunning(false);
-                    point.setText("" + user_point);
-                    showDialog();
+                    right = false;
                 }
             }
         });
@@ -275,33 +235,34 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         answer4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(questionList.get(INDEX).getAnswerList().get(3).isValue()){
+                answer4.setBackgroundDrawable(getResources().getDrawable(R.drawable.right_answer));
+                freeze();
+                if (questionList.get(INDEX).getAnswerList().get(3).isValue()) {
                     right = true;
                     click.start();
-                    user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
-                    INDEX++;
-                    poin.setText("" + user_point);
 
-                    benar.show();
-                    startAnimation(answer4, true);
+                    check.setVisibility(View.GONE);
 
-                    if(INDEX < 10){
-                        check.setVisibility(View.GONE);
-                    } else {
-                        setRunning(false);
-                        point.setText("" + user_point);
-                        if(user_point == 100 || INDEX == 10)
-                            ulangi.setVisibility(View.GONE);
-                        showDialog();
-                    }
                 } else {
-                    setRunning(false);
-                    point.setText("" + user_point);
-                    showDialog();
+                    right = false;
                 }
             }
         });
 
+    }
+
+    private void freeze() {
+        answer1.setClickable(false);
+        answer2.setClickable(false);
+        answer3.setClickable(false);
+        answer4.setClickable(false);
+    }
+
+    private void unfreeze() {
+        answer1.setClickable(true);
+        answer2.setClickable(true);
+        answer3.setClickable(true);
+        answer4.setClickable(true);
     }
 
     private void updatePoint(final String point, final String email) {
@@ -344,7 +305,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
 
             @Override
             protected Map<String, String> getParams() {
@@ -365,7 +326,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void run() {
                 user_point -= 30;
-                if(user_point < 0)
+                if (user_point < 0)
                     user_point = 0;
 
                 poin.setText(user_point + "");
@@ -376,6 +337,8 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         hideDialog();
         width = 100;
         setRunning(true);
+        setToDefault();
+        unfreeze();
         new Thread(this).start();
     }
 
@@ -415,14 +378,14 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
                         JSONObject quest_obj;
 
-                        for(int i=0; i<question.length(); i++){
+                        for (int i = 0; i < question.length(); i++) {
                             quest_obj = question.getJSONObject(i);
                             pertanyaan = quest_obj.getString("pertanyaan");
                             poin = quest_obj.getString("poin");
                             answers = quest_obj.getJSONArray("jawaban");
 
                             List<Answer> answerList = new ArrayList<>();
-                            for(int j=0; j<answers.length(); j++){
+                            for (int j = 0; j < answers.length(); j++) {
                                 jawaban = answers.getJSONObject(j).getString("jawaban");
                                 value = answers.getJSONObject(j).getBoolean("status");
                                 answerList.add(new Answer(jawaban, value));
@@ -471,6 +434,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
         end.release();
         click.release();
+        music.release();
     }
 
     @Override
@@ -492,7 +456,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         music.release();
     }
 
-    private void hideDialog(){
+    private void hideDialog() {
         if (dialog.isShowing())
             dialog.dismiss();
 
@@ -507,7 +471,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
     @Override
     public void run() {
-        while(width > 0 && isRunning){
+        while (width > 0 && isRunning) {
             width -= 1;
             handler.post(new Runnable() {
                 @Override
@@ -517,26 +481,64 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             });
 
             try {
-                Thread.sleep(30);
+                Thread.sleep(50);
             } catch (InterruptedException e) {
                 Toast.makeText(getApplicationContext(), "Bentar wak", Toast.LENGTH_SHORT).show();
             }
 
-            if(width == 1 && right){
+            if (width == 1 && right) {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        benar.show();
+                    }
+                });
+
+                music.release();
+                MediaPlayer congrats = MediaPlayer.create(this, R.raw.nextquestion);
+                congrats.start();
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                congrats.release();
+                music = MediaPlayer.create(this, R.raw.inquestion);
+                music.start();
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        benar.dismiss();
                         width = 100;
                         point.setText(Integer.toString(user_point));
-                        benar.dismiss();
+                        user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
+                        INDEX++;
+                        poin.setText("" + user_point);
                         right = false;
-                        startQuestion(INDEX);
-                        stopAnimation();
+                        setToDefault();
+                        unfreeze();
+
+                        if (INDEX < 10)
+                            startQuestion(INDEX);
+                        else {
+                            ulangi.setVisibility(View.GONE);
+                            isRunning = false;
+                            showDialog();
+                        }
+                    }
+                });
+            } else if (width == 1 && !right) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        point.setText(Integer.toString(user_point));
+                        showDialog();
                     }
                 });
             }
 
-            if(width == 0 && !right){
+            if (width == 0 && !right) {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -548,23 +550,18 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         }
     }
 
-    private void stopAnimation() {
-        startAnimation(answer1, false);
-        startAnimation(answer2, false);
-        startAnimation(answer3, false);
-        startAnimation(answer4, false);
-
-        answer1.setBackground(getResources().getDrawable(R.drawable.rounded_answer));
-        answer2.setBackground(getResources().getDrawable(R.drawable.rounded_answer));
-        answer3.setBackground(getResources().getDrawable(R.drawable.rounded_answer));
-        answer4.setBackground(getResources().getDrawable(R.drawable.rounded_answer));
+    private void setToDefault() {
+        answer1.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_answer));
+        answer2.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_answer));
+        answer3.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_answer));
+        answer4.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_answer));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if(!session.isLoggedIn()){
+        if (!session.isLoggedIn()) {
             nama = (TextView) findViewById(R.id.masok);
             nama.setText("Masok");
         } else {
@@ -576,23 +573,4 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         }
     }
 
-    protected void startAnimation(LinearLayout layout, boolean start){
-        final AnimationDrawable drawable = new AnimationDrawable();
-
-        drawable.addFrame(new ColorDrawable(getResources().getColor(R.color.default_color)), 100);
-        drawable.addFrame(new ColorDrawable(getResources().getColor(R.color.benar)), 100);
-        drawable.setOneShot(false);
-
-        layout.setBackgroundDrawable(drawable);
-        if(start){
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    drawable.start();
-                }
-            }, 100);
-        } else {
-            drawable.stop();
-        }
-    }
 }

@@ -182,42 +182,18 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
                     INDEX++;
                     poin.setText("" + user_point);
+                    music.release();
 
-                    new AsyncTask<Void, Void, Void>() {
+                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
+                    right.start();
 
-                        @Override
-                        protected void onPostExecute(Void result) {
-                            Toast toast2 = Toast.makeText(getApplicationContext(), "Sleep completed",
-                                    Toast.LENGTH_SHORT);
-                            toast2.show();
-                        }
+                    while (right.isPlaying()){
 
-                        @Override
-                        protected void onPreExecute() {
-                            Toast toast1 = Toast.makeText(getApplicationContext(), "Service Started",
-                                    Toast.LENGTH_SHORT);
-                            toast1.show();
-                        }
+                    }
 
-                        @Override
-                        protected Void doInBackground(Void... params) {
-                            // Try to sleep for roughly 2 seconds
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(2000);
-                                    } catch (InterruptedException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                            return null;
-
-                        }
-
-                    }.execute();
+                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
+                    music.start();
+                    right.release();
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);

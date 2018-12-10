@@ -186,13 +186,14 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(0).isValue()){
-                    INDEX++;
                     right = true;
                     click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
+                    INDEX++;
                     poin.setText("" + user_point);
 
                     benar.show();
+                    startAnimation(answer1, true);
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
@@ -215,13 +216,14 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(1).isValue()){
-                    INDEX++;
                     right = true;
                     click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
+                    INDEX++;
                     poin.setText("" + user_point);
 
                     benar.show();
+                    startAnimation(answer2, true);
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
@@ -244,13 +246,14 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(2).isValue()){
-                    INDEX++;
                     right = true;
                     click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
+                    INDEX++;
                     poin.setText("" + user_point);
 
                     benar.show();
+                    startAnimation(answer3, true);
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
@@ -273,13 +276,14 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(3).isValue()){
-                    INDEX++;
                     right = true;
                     click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
+                    INDEX++;
                     poin.setText("" + user_point);
 
                     benar.show();
+                    startAnimation(answer4, true);
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
@@ -527,6 +531,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                         benar.dismiss();
                         right = false;
                         startQuestion(INDEX);
+                        stopAnimation();
                     }
                 });
             }
@@ -541,6 +546,13 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 });
             }
         }
+    }
+
+    private void stopAnimation() {
+        startAnimation(answer1, false);
+        startAnimation(answer2, false);
+        startAnimation(answer3, false);
+        startAnimation(answer4, false);
     }
 
     @Override
@@ -559,19 +571,23 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         }
     }
 
-    protected void startAnimation(LinearLayout layout){
+    protected void startAnimation(LinearLayout layout, boolean start){
         final AnimationDrawable drawable = new AnimationDrawable();
 
-        drawable.addFrame(new ColorDrawable(getResources().getColor(R.color.default_color)), 400);
-        drawable.addFrame(new ColorDrawable(getResources().getColor(R.color.benar)), 400);
+        drawable.addFrame(new ColorDrawable(getResources().getDrawable(R.drawable.right_answer)), 100);
+        drawable.addFrame(new ColorDrawable(getResources().getColor(R.color.benar)), 100);
         drawable.setOneShot(false);
 
         layout.setBackgroundDrawable(drawable);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                drawable.start();
-            }
-        }, 100);
+        if(start){
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    drawable.start();
+                }
+            }, 100);
+        } else {
+            drawable.stop();
+        }
     }
 }

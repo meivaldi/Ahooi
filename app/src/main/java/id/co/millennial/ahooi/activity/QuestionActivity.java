@@ -47,10 +47,10 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
     private static final String TAG = QuestionActivity.class.getSimpleName();
 
-    private TextView poin, point, label, nama, checkpoint;
+    private TextView poin, point, label, nama, checkpoint, betol;
     private ProgressBar progress;
     private Handler handler = new Handler();
-    private Dialog dialog;
+    private Dialog dialog, benar;
     private Button balek, ulangi;
 
     private int width = 100;
@@ -69,6 +69,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
     private List<Question> questionList;
 
     private int INDEX = 0;
+    private boolean right = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,14 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         progress = (ProgressBar) findViewById(R.id.progress);
         poin = (TextView) findViewById(R.id.poin);
         poin.setTypeface(typeface);
+
+        benar = new Dialog(QuestionActivity.this);
+        benar.setContentView(R.layout.benar);
+        benar.setCancelable(false);
+        benar.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        betol = benar.findViewById(R.id.benar);
+        betol.setTypeface(tf);
 
         dialog = new Dialog(QuestionActivity.this);
         dialog.setContentView(R.layout.game_over);
@@ -177,27 +186,16 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(0).isValue()){
-                    width = 100;
+                    INDEX++;
+                    right = true;
                     click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
-                    INDEX++;
                     poin.setText("" + user_point);
-                    music.release();
 
-                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
-                    right.start();
-
-                    while (right.isPlaying()){
-
-                    }
-
-                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
-                    music.start();
-                    right.release();
+                    benar.show();
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
-                        startQuestion(INDEX);
                     } else {
                         setRunning(false);
                         point.setText("" + user_point);
@@ -217,27 +215,16 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(1).isValue()){
-                    width = 100;
+                    INDEX++;
+                    right = true;
                     click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
-                    INDEX++;
                     poin.setText("" + user_point);
-                    music.release();
 
-                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
-                    right.start();
-
-                    while (right.isPlaying()){
-
-                    }
-
-                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
-                    music.start();
-                    right.release();
+                    benar.show();
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
-                        startQuestion(INDEX);
                     } else {
                         setRunning(false);
                         point.setText("" + user_point);
@@ -257,27 +244,16 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(2).isValue()){
-                    width = 100;
+                    INDEX++;
+                    right = true;
                     click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
-                    INDEX++;
                     poin.setText("" + user_point);
-                    music.release();
 
-                    MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
-                    right.start();
-
-                    while (right.isPlaying()){
-
-                    }
-
-                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
-                    music.start();
-                    right.release();
+                    benar.show();
 
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
-                        startQuestion(INDEX);
                     } else {
                         setRunning(false);
                         point.setText("" + user_point);
@@ -297,26 +273,16 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onClick(View v) {
                 if(questionList.get(INDEX).getAnswerList().get(3).isValue()){
-                    width = 100;
+                    INDEX++;
+                    right = true;
                     click.start();
                     user_point += Integer.valueOf(questionList.get(INDEX).getPoint());
-                    INDEX++;
                     poin.setText("" + user_point);
-                    music.release();
 
-                    final MediaPlayer right = MediaPlayer.create(QuestionActivity.this, R.raw.nextquestion);
-                    right.start();
+                    benar.show();
 
-                    while (right.isPlaying()){
-
-                    }
-
-                    music = MediaPlayer.create(QuestionActivity.this, R.raw.inquestion);
-                    music.start();
-                    right.release();
                     if(INDEX < 10){
                         check.setVisibility(View.GONE);
-                        startQuestion(INDEX);
                     } else {
                         setRunning(false);
                         point.setText("" + user_point);
@@ -332,20 +298,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             }
         });
 
-    }
-
-    private void disableClick() {
-        answer1.setClickable(false);
-        answer2.setClickable(false);
-        answer3.setClickable(false);
-        answer4.setClickable(false);
-    }
-
-    private void enableClick() {
-        answer1.setClickable(true);
-        answer2.setClickable(true);
-        answer3.setClickable(true);
-        answer4.setClickable(true);
     }
 
     private void updatePoint(final String point, final String email) {
@@ -434,11 +386,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         c.setText(jb.get(2).getAnswer());
         d.setText(jb.get(3).getAnswer());
 
-        checkAnswer();
-    }
-
-    private void checkAnswer() {
-        width = 100;
     }
 
     private void loadQuestion() {
@@ -566,12 +513,25 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             });
 
             try {
-                Thread.sleep(100);
+                Thread.sleep(30);
             } catch (InterruptedException e) {
                 Toast.makeText(getApplicationContext(), "Bentar wak", Toast.LENGTH_SHORT).show();
             }
 
-            if(width == 0){
+            if(width == 1 && right){
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        width = 100;
+                        point.setText(Integer.toString(user_point));
+                        benar.dismiss();
+                        right = false;
+                        startQuestion(INDEX);
+                    }
+                });
+            }
+
+            if(width == 0 && !right){
                 handler.post(new Runnable() {
                     @Override
                     public void run() {

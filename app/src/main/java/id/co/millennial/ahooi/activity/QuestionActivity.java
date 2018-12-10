@@ -553,6 +553,11 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         startAnimation(answer2, false);
         startAnimation(answer3, false);
         startAnimation(answer4, false);
+
+        answer1.setBackground(getResources().getDrawable(R.drawable.rounded_answer));
+        answer2.setBackground(getResources().getDrawable(R.drawable.rounded_answer));
+        answer3.setBackground(getResources().getDrawable(R.drawable.rounded_answer));
+        answer4.setBackground(getResources().getDrawable(R.drawable.rounded_answer));
     }
 
     @Override
@@ -574,7 +579,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
     protected void startAnimation(LinearLayout layout, boolean start){
         final AnimationDrawable drawable = new AnimationDrawable();
 
-        drawable.addFrame(new ColorDrawable(getResources().getDrawable(R.drawable.right_answer)), 100);
+        drawable.addFrame(new ColorDrawable(getResources().getColor(R.color.default_color)), 100);
         drawable.addFrame(new ColorDrawable(getResources().getColor(R.color.benar)), 100);
         drawable.setOneShot(false);
 

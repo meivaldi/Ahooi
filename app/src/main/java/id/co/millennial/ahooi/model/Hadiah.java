@@ -8,6 +8,12 @@ public class Hadiah {
 
     private String id, nama, point, foto;
 
+    public Hadiah(String id, String nama, String foto) {
+        this.id = id;
+        this.nama = nama;
+        this.foto = foto;
+    }
+
     public Hadiah(String id, String nama, String point, String foto) {
         this.id = id;
         this.nama = nama;

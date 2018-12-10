@@ -9,22 +9,22 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"/>
+        android:background="@drawable/background" />
 
     <RelativeLayout
         android:id="@+id/back"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp">
 
         <RelativeLayout
             android:id="@+id/layout_1"
-            android:layout_marginTop="2dp"
-            android:layout_marginStart="2dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/circle_2"/>
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/circle_2" />
 
         <RelativeLayout
             android:id="@+id/layout_2"
@@ -36,158 +36,165 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_back"/>
+                android:src="@drawable/ic_back" />
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <ScrollView
+        android:layout_below="@id/back"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:id="@+id/info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/profile"/>
-
-        <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:textSize="18dp"
-            android:textColor="@android:color/white"
-            android:text="User Name"/>
-
-        <RelativeLayout
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="20dp">
-
-            <ImageView
-                android:id="@+id/star"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/star"
-                android:layout_centerVertical="true"/>
-
-            <TextView
-                android:id="@+id/point"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_toRightOf="@id/star"
-                android:layout_centerVertical="true"
-                android:text="0 Poen"
-                android:textSize="20dp"
-                android:textColor="@android:color/white"/>
-
-        </RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp">
+            android:layout_height="wrap_content">
 
-            <Button
-                android:layout_marginTop="5dp"
+            <LinearLayout
+                android:id="@+id/info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textAllCaps="false"
-                android:clickable="false"
-                android:background="@drawable/keluar_button_2"/>
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Keluar"
-                android:textSize="18dp"
-                android:textColor="@android:color/white"
-                android:textAllCaps="false"
-                android:clickable="false"
-                android:background="@drawable/keluar_button"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_below="@id/info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="180dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:orientation="vertical"
-            android:background="@drawable/rounded">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@drawable/rounded_white">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="70dp"
-            android:layout_marginEnd="70dp"
-            android:layout_marginTop="70dp"
-            android:background="@drawable/header_berita_outer">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_centerInParent="true"
-                android:layout_margin="10dp"
-                android:background="@drawable/header_berita_inner">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/profile" />
 
                 <TextView
-                    android:id="@+id/title"
+                    android:id="@+id/user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hadiah"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="15dp"
+                    android:text="User Name"
                     android:textColor="@android:color/white"
-                    android:textSize="25dp"
-                    android:layout_centerInParent="true"/>
+                    android:textSize="18dp" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/star"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/star" />
+
+                    <TextView
+                        android:id="@+id/point"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_toRightOf="@id/star"
+                        android:text="0 Poen"
+                        android:textColor="@android:color/white"
+                        android:textSize="20dp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="30dp">
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/keluar_button_2"
+                        android:clickable="false"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white" />
+
+                    <Button
+                        android:id="@+id/logout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/keluar_button"
+                        android:clickable="false"
+                        android:text="Keluar"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="18dp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_below="@id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="180dp"
+                    android:background="@drawable/rounded"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/rounded_white">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="70dp"
+                    android:layout_marginStart="70dp"
+                    android:layout_marginTop="70dp"
+                    android:background="@drawable/header_berita_outer">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/header_berita_inner">
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="Hadiah mu"
+                            android:textColor="@android:color/white"
+                            android:textSize="25dp" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
         </RelativeLayout>
 
-    </RelativeLayout>
-
-    </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

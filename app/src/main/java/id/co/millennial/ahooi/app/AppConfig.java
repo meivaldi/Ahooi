@@ -13,5 +13,7 @@ public class AppConfig {
     public static String URL_UPDATE_POINT = "https://millennial.co.id/ahooi/android/update_point.php";
     public static String URL_GET_PRIZE = "https://millennial.co.id/ahooi/android/get_prize.php";
     public static String URL_CLAIM_PRIZE = "https://millennial.co.id/ahooi/android/user_prize.php";
+    public static String URL_USER_PRIZES = "https://millennial.co.id/ahooi/android/user_prize_list.php";
+    public static String URL_CONFIRM = "https://millennial.co.id/ahooi/android/confirm.php";
 
 }

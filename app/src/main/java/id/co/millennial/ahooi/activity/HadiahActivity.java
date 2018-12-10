@@ -44,6 +44,7 @@ public class HadiahActivity extends AppCompatActivity {
 
     private RelativeLayout back;
     private MediaPlayer click;
+    private TextView title;
 
     private RecyclerView recyclerView;
     private HadiahAdapter hadiahAdapter;
@@ -58,6 +59,9 @@ public class HadiahActivity extends AppCompatActivity {
         setContentView(R.layout.hadiah);
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
+
+        title = (TextView) findViewById(R.id.title);
+        title.setTypeface(typeface);
 
         hadiahList = new ArrayList<>();
         hadiahAdapter = new HadiahAdapter(this, hadiahList);

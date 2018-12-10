@@ -12,115 +12,84 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import id.co.millennial.ahooi.R;
-import id.co.millennial.ahooi.activity.QuestionActivity;
 import id.co.millennial.ahooi.app.AppConfig;
 import id.co.millennial.ahooi.app.AppController;
-import id.co.millennial.ahooi.helper.SQLiteHandler;
-import id.co.millennial.ahooi.helper.SessionManager;
-import id.co.millennial.ahooi.model.Answer;
 import id.co.millennial.ahooi.model.Hadiah;
-import id.co.millennial.ahooi.model.Question;
 
 /**
- * Created by root on 08/12/18.
+ * Created by root on 10/12/18.
  */
 
-public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHolder> {
+public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.CustomViewHolder> {
 
-    private static final String TAG = HadiahAdapter.class.getSimpleName();
+    private static final String TAG = PrizeAdapter.class.getSimpleName();
 
     private Context context;
     private List<Hadiah> hadiahList;
 
-    private SQLiteHandler db;
-    private SessionManager session;
-    private HashMap<String, String> user;
-
-    public HadiahAdapter(Context context, List<Hadiah> hadiahList) {
+    public PrizeAdapter(Context context, List<Hadiah> hadiahList) {
         this.context = context;
         this.hadiahList = hadiahList;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = null;
 
-        View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.hadiah_item, parent, false);
+        if(hadiahList.size() == 0){
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.nothing, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.prize_item, parent, false);
+        }
 
-        return new MyViewHolder(view);
+        return new CustomViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(CustomViewHolder holder, final int position) {
         final Hadiah hadiah = hadiahList.get(position);
 
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/GOODDP_.TTF");
 
-        holder.ambil.setTypeface(typeface);
-        holder.nama.setTypeface(typeface);
-        holder.point.setTypeface(typeface);
-
-        holder.nama.setText(hadiah.getNama());
-        holder.point.setText(hadiah.getPoint());
+        holder.prizeTitle.setText(hadiah.getNama());
+        holder.prizeTitle.setTypeface(typeface);
 
         Glide.with(context)
                 .load(hadiah.getFoto())
                 .override(100, 100)
-                .into(holder.foto);
+                .into(holder.prizeImage);
 
-        db = new SQLiteHandler(context);
-        session = new SessionManager(context);
-
-        holder.ambil.setOnClickListener(new View.OnClickListener() {
+        holder.confirm.setTypeface(typeface);
+        holder.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(session.isLoggedIn()){
-                    user = db.getUserDetails();
-                    String id = user.get("id");
-                    String email = user.get("email");
-
-                    int poen = Integer.valueOf(hadiah.getPoint());
-                    int pt = Integer.valueOf(user.get("poin"));
-
-                    if(pt > 0){
-                        int value = pt-poen;
-                        if(value < 0)
-                            value = pt;
-
-                        db.updateValue("poin", email, Integer.toString(value));
-                    }
-
-                    getPrize(id, hadiah.getId());
-
-                } else {
-                    Toast.makeText(context, "Login dulu wak!", Toast.LENGTH_SHORT).show();
-                }
+                removeItem(position);
+                confirm(hadiah.getId());
             }
         });
     }
 
-    private void getPrize(final String id_user, final String id_hadiah) {
+    private void confirm(final String id) {
         String tag_string_req = "req_login";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_CLAIM_PRIZE, new Response.Listener<String>() {
+                AppConfig.URL_CONFIRM, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -158,8 +127,7 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("id_user", id_user);
-                params.put("id_hadiah", id_hadiah);
+                params.put("id", id);
 
                 return params;
             }
@@ -174,18 +142,25 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
         return hadiahList.size();
     }
 
-    protected class MyViewHolder extends RecyclerView.ViewHolder{
-        private Button ambil;
-        private ImageView foto;
-        private TextView nama, point;
+    public void removeItem(int position){
+        hadiahList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, hadiahList.size());
+    }
 
-        public MyViewHolder(View itemView) {
+    public class CustomViewHolder extends RecyclerView.ViewHolder {
+
+        private Button confirm;
+        private ImageView prizeImage;
+        private TextView prizeTitle;
+
+        public CustomViewHolder(View itemView) {
             super(itemView);
-            ambil = itemView.findViewById(R.id.ambil);
-            foto = itemView.findViewById(R.id.price_image);
-            nama = itemView.findViewById(R.id.price_name);
-            point = itemView.findViewById(R.id.point);
+            confirm = itemView.findViewById(R.id.konfirmasi);
+            prizeImage = itemView.findViewById(R.id.price_image);
+            prizeTitle = itemView.findViewById(R.id.price_name);
         }
+
     }
 
 }

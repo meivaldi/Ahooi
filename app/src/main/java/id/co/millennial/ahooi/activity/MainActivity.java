@@ -1,11 +1,9 @@
 package id.co.millennial.ahooi.activity;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -42,7 +40,6 @@ import id.co.millennial.ahooi.app.AppController;
 import id.co.millennial.ahooi.helper.SQLiteHandler;
 import id.co.millennial.ahooi.helper.SessionManager;
 import id.co.millennial.ahooi.model.Berita;
-import id.co.millennial.ahooi.model.Hadiah;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private NewsAdapter beritaAdapter;
     private List<Berita> beritaList;
 
-    public static boolean flag = false;
+    public static boolean flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 click.start();
+                flag = false;
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
         });
@@ -148,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 click.start();
+                flag = false;
                 startActivity(new Intent(getApplicationContext(), HadiahActivity.class));
             }
         });
@@ -196,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.show();
                 click.start();
+                flag = false;
             }
         });
     }
@@ -262,8 +262,9 @@ public class MainActivity extends AppCompatActivity {
         if(flag){
             menu = MediaPlayer.create(this, R.raw.gamemenu);
             menu.start();
-            flag = false;
+            flag = true;
         }
+
     }
 
     private void logoutUser() {
@@ -280,9 +281,10 @@ public class MainActivity extends AppCompatActivity {
 
         dialog.dismiss();
 
-        if(flag){
+        if(!flag){
             menu.release();
         }
+
     }
 
     @Override

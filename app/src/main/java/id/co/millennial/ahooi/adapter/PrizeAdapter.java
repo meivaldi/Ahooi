@@ -76,6 +76,7 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.CustomViewHo
                 .into(holder.prizeImage);
 
         holder.confirm.setTypeface(typeface);
+        holder.background.setTypeface(typeface);
         holder.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,12 +151,13 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.CustomViewHo
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private Button confirm;
+        private Button confirm, background;
         private ImageView prizeImage;
         private TextView prizeTitle;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
+            background = itemView.findViewById(R.id.background);
             confirm = itemView.findViewById(R.id.konfirmasi);
             prizeImage = itemView.findViewById(R.id.price_image);
             prizeTitle = itemView.findViewById(R.id.price_name);

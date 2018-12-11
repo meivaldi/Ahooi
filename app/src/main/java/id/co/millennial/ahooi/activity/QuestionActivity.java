@@ -153,6 +153,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
                     updatePoint(Integer.toString(user_point), email);
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    hideDialog();
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Login dulu wak!", Toast.LENGTH_SHORT).show();
@@ -444,6 +445,9 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         music.release();
         end.release();
         click.release();
+        isRunning = false;
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        Toast.makeText(getApplicationContext(), "Ahh lemahla kau!", Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -523,6 +527,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                             startQuestion(INDEX);
                         else {
                             ulangi.setVisibility(View.GONE);
+                            point.setText(Integer.toString(user_point));
                             isRunning = false;
                             showDialog();
                         }

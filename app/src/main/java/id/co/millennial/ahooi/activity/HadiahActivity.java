@@ -44,7 +44,7 @@ public class HadiahActivity extends AppCompatActivity {
 
     private RelativeLayout back;
     private MediaPlayer click;
-    private TextView title, notice;
+    private TextView title;
 
     private RecyclerView recyclerView;
     private HadiahAdapter hadiahAdapter;
@@ -62,9 +62,6 @@ public class HadiahActivity extends AppCompatActivity {
 
         title = (TextView) findViewById(R.id.title);
         title.setTypeface(typeface);
-
-        notice = (TextView) findViewById(R.id.pengumuman);
-        notice.setTypeface(typeface);
 
         hadiahList = new ArrayList<>();
         hadiahAdapter = new HadiahAdapter(this, hadiahList);

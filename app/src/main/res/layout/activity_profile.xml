@@ -102,6 +102,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/back_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="50dp"
@@ -130,6 +131,17 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/pengumuman"
+                    android:layout_below="@id/back_button"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="20dp"
+                    android:text="Pengumuman: \n\nHadiah harap diambil dikantor PAC Gerindra Medan Johor, Jl. Karya Jaya No. 114A"/>
+
             </LinearLayout>
 
             <RelativeLayout
@@ -144,7 +156,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="30dp"
                     android:layout_marginStart="30dp"
-                    android:layout_marginTop="180dp"
+                    android:layout_marginTop="140dp"
                     android:background="@drawable/rounded"
                     android:orientation="vertical">
 
@@ -169,7 +181,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginEnd="70dp"
                     android:layout_marginStart="70dp"
-                    android:layout_marginTop="70dp"
+                    android:layout_marginTop="50dp"
                     android:background="@drawable/header_berita_outer">
 
                     <RelativeLayout

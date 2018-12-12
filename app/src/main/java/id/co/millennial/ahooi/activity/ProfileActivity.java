@@ -49,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private RelativeLayout back;
     private Button logout;
-    private TextView userName, point, title, label;
+    private TextView userName, point, title, label, notice;
     private MediaPlayer click;
 
     private SQLiteHandler db;
@@ -74,6 +74,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         label = (TextView) findViewById(R.id.label);
         label.setTypeface(typeface);
+
+        notice = (TextView) findViewById(R.id.pengumuman);
+        notice.setTypeface(typeface);
 
         title = (TextView) findViewById(R.id.title);
         title.setTypeface(typeface);

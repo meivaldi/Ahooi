@@ -8,6 +8,10 @@ public class Berita {
 
     private String judul, url;
 
+    public Berita(String judul) {
+        this.judul = judul;
+    }
+
     public Berita(String judul, String url) {
         this.judul = judul;
         this.url = url;

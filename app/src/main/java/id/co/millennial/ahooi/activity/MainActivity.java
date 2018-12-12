@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private NewsAdapter beritaAdapter;
     private List<Berita> beritaList;
 
-    public static boolean flag = true;
+    private boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 click.start();
-                flag = false;
+                flag = true;
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
         });
@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 click.start();
                 startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
                 menu.release();
+                flag = true;
                 finish();
             }
         });
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 click.start();
-                flag = false;
+                flag = true;
                 startActivity(new Intent(getApplicationContext(), HadiahActivity.class));
             }
         });
@@ -195,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.show();
                 click.start();
-                flag = false;
             }
         });
     }
@@ -260,11 +260,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(flag){
+           flag = false;
+        } else {
             menu = MediaPlayer.create(this, R.raw.gamemenu);
             menu.start();
-            flag = true;
         }
-
     }
 
     private void logoutUser() {

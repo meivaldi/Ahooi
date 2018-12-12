@@ -133,6 +133,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/prize"
                 android:layout_below="@id/info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -184,6 +185,68 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:text="Hadiah mu"
+                            android:textColor="@android:color/white"
+                            android:textSize="25dp" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/history"
+                android:layout_below="@id/prize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/rounded"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/rounded_white">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/history_list"
+                            android:layout_marginTop="50dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="70dp"
+                    android:layout_marginStart="70dp"
+                    android:background="@drawable/header_berita_outer">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/header_berita_inner">
+
+                        <TextView
+                            android:id="@+id/label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="History"
                             android:textColor="@android:color/white"
                             android:textSize="25dp" />
 

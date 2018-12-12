@@ -52,7 +52,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(berita.getUrl()));
-                MainActivity.flag = true;
                 context.startActivity(intent);
             }
         });

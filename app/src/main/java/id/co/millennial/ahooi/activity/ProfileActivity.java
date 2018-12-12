@@ -34,11 +34,13 @@ import java.util.List;
 import java.util.Map;
 
 import id.co.millennial.ahooi.R;
+import id.co.millennial.ahooi.adapter.NewsAdapter;
 import id.co.millennial.ahooi.adapter.PrizeAdapter;
 import id.co.millennial.ahooi.app.AppConfig;
 import id.co.millennial.ahooi.app.AppController;
 import id.co.millennial.ahooi.helper.SQLiteHandler;
 import id.co.millennial.ahooi.helper.SessionManager;
+import id.co.millennial.ahooi.model.Berita;
 import id.co.millennial.ahooi.model.Hadiah;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -47,15 +49,18 @@ public class ProfileActivity extends AppCompatActivity {
 
     private RelativeLayout back;
     private Button logout;
-    private TextView userName, point, title;
+    private TextView userName, point, title, label;
     private MediaPlayer click;
 
     private SQLiteHandler db;
     private SessionManager session;
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, history;
     private PrizeAdapter adapter;
     private List<Hadiah> hadiahList;
+
+    private List<Berita> historyList;
+    private NewsAdapter prizeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,9 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
+
+        label = (TextView) findViewById(R.id.label);
+        label.setTypeface(typeface);
 
         title = (TextView) findViewById(R.id.title);
         title.setTypeface(typeface);
@@ -121,6 +129,16 @@ public class ProfileActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(adapter);
 
+        historyList = new ArrayList<>();
+        prizeAdapter = new NewsAdapter(this, historyList);
+
+        recyclerView = (RecyclerView) findViewById(R.id.history_list);
+        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager1);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(prizeAdapter);
+
         loadPrize(id);
 
     }
@@ -137,11 +155,12 @@ public class ProfileActivity extends AppCompatActivity {
 
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    JSONArray gambar, nama, id_hadiah;
+                    JSONArray gambar, nama, id_hadiah, history;
 
                     id_hadiah = jObj.getJSONArray("id_hadiah");
                     gambar = jObj.getJSONArray("gambar_hadiah");
                     nama = jObj.getJSONArray("title_hadiah");
+                    history = jObj.getJSONArray("history");
 
                     String title, image, id;
                     for(int i=0; i<gambar.length(); i++){
@@ -152,7 +171,15 @@ public class ProfileActivity extends AppCompatActivity {
                         hadiahList.add(new Hadiah(id, title, image));
                     }
 
+                    String hadiah;
+                    for(int i=0; i<history.length(); i++){
+                        hadiah = history.getString(i);
+
+                        historyList.add(new Berita(hadiah));
+                    }
+
                     adapter.notifyDataSetChanged();
+                    prizeAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -1,5 +1,6 @@
 package id.co.millennial.ahooi.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
@@ -53,6 +54,9 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
     private SessionManager session;
     private HashMap<String, String> user;
 
+    private Dialog dialog;
+    private TextView congrats, title;
+
     public HadiahAdapter(Context context, List<Hadiah> hadiahList) {
         this.context = context;
         this.hadiahList = hadiahList;
@@ -88,6 +92,17 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
         db = new SQLiteHandler(context);
         session = new SessionManager(context);
 
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.congratulation);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        congrats = dialog.findViewById(R.id.greetings);
+        congrats.setTypeface(typeface);
+
+        title = dialog.findViewById(R.id.title);
+        title.setTypeface(typeface);
+
         holder.ambil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +123,9 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
                     }
 
                     getPrize(id, hadiah.getId());
+
+                    congrats.setText("Selamat lah wak ya, dapat " + hadiah.getNama() + " kau!");
+                    dialog.show();
 
                 } else {
                     Toast.makeText(context, "Login dulu wak!", Toast.LENGTH_SHORT).show();
@@ -132,12 +150,10 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
 
                     if (!error) {
                         String message = jObj.getString("error_msg");
-                        Toast.makeText(context,
-                                message, Toast.LENGTH_LONG).show();
+                        Log.d(TAG, message);
                     } else {
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(context,
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        Log.d(TAG, errorMsg);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

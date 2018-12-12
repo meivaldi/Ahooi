@@ -86,10 +86,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
         MobileAds.initialize(this, "ca-app-pub-3364138612972741~4746456309");
 
-        adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-
         loadQuestion();
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
@@ -266,6 +262,10 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 }
             }
         });
+
+        adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
     }
 

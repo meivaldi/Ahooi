@@ -7,14 +7,17 @@ package id.co.millennial.ahooi.model;
 public class Berita {
 
     private String judul, url;
+    private boolean clickable;
 
-    public Berita(String judul) {
+    public Berita(String judul, boolean clickable) {
         this.judul = judul;
+        this.clickable = clickable;
     }
 
-    public Berita(String judul, String url) {
+    public Berita(String judul, String url, boolean clickable) {
         this.judul = judul;
         this.url = url;
+        this.clickable = clickable;
     }
 
     public String getJudul() {
@@ -31,5 +34,13 @@ public class Berita {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public boolean isClickable() {
+        return clickable;
+    }
+
+    public void setClickable(boolean clickable) {
+        this.clickable = clickable;
     }
 }

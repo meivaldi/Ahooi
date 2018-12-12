@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                         judul = news.getString("judul");
                         url = news.getString("url");
 
-                        beritaList.add(new Berita(judul, url));
+                        beritaList.add(new Berita(judul, url, true));
                     }
 
                     beritaAdapter.notifyDataSetChanged();

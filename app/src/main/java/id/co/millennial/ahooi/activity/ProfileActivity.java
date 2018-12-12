@@ -178,7 +178,7 @@ public class ProfileActivity extends AppCompatActivity {
                     for(int i=0; i<history.length(); i++){
                         hadiah = history.getString(i);
 
-                        historyList.add(new Berita(hadiah));
+                        historyList.add(new Berita(hadiah, false));
                     }
 
                     adapter.notifyDataSetChanged();

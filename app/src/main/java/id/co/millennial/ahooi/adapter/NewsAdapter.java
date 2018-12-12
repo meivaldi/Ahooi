@@ -50,9 +50,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         holder.news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(berita.getUrl()));
-                context.startActivity(intent);
+                if(berita.isClickable()){
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(berita.getUrl()));
+                    context.startActivity(intent);
+                }
             }
         });
     }

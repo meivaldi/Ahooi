@@ -16,5 +16,7 @@ public class AppConfig {
     public static String URL_USER_PRIZES = "https://www.ahooimedan.com/ahooi/android/user_prize_list.php";
     public static String URL_CONFIRM = "https://www.ahooimedan.com/ahooi/android/confirm.php";
     public static String URL_GET_NEWS = "https://www.ahooimedan.com/ahooi/android/fetch_news.php";
+    public static String URL_VERSION = "https://www.ahooimedan.com/ahooi/android/version.php";
+    public static String URL_STORE_APK = "https://www.ahooimedan.com/ahooi/android/apk.php";
 
 }

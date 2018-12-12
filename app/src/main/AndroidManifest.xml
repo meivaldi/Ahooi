@@ -24,7 +24,8 @@
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.QuestionActivity" />
         <activity android:name=".activity.HadiahActivity" />
-        <activity android:name=".activity.ProfileActivity"></activity>
+        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.UpdateActivity"></activity>
     </application>
 
 </manifest>

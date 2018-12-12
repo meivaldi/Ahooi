@@ -268,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
            flag = false;
         } else {
             menu = MediaPlayer.create(this, R.raw.gamemenu);
+            menu.setLooping(true);
             menu.start();
         }
     }

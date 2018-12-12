@@ -49,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private RelativeLayout back;
     private Button logout;
-    private TextView userName, point, title, label, notice;
+    private TextView userName, point, title, label, notice, disc_title;
     private MediaPlayer click;
 
     private SQLiteHandler db;
@@ -71,6 +71,9 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
+
+        disc_title = (TextView) findViewById(R.id.disc_title);
+        disc_title.setTypeface(typeface);
 
         label = (TextView) findViewById(R.id.label);
         label.setTypeface(typeface);

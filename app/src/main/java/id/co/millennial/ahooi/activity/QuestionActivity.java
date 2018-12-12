@@ -158,21 +158,16 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         balek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (session.isLoggedIn()) {
+                if(session.isLoggedIn()){
                     HashMap<String, String> user = db.getUserDetails();
                     String email = user.get("email");
 
                     updatePoint(Integer.toString(user_point), email);
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    hideDialog();
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Login dulu wak!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    intent.putExtra("FLAG", true);
-                    startActivity(intent);
                 }
+
+                finish();
                 music.release();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
 
@@ -190,7 +185,14 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         ulangi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                restart();
+                if (session.isLoggedIn()) {
+                    restart();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Login dulu wak!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    intent.putExtra("FLAG", true);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -201,6 +203,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 freeze();
                 if (questionList.get(INDEX).getAnswerList().get(0).isValue()) {
                     right = true;
+                    click = MediaPlayer.create(QuestionActivity.this, R.raw.click);
                     click.start();
 
                     check.setVisibility(View.GONE);
@@ -217,6 +220,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 freeze();
                 if (questionList.get(INDEX).getAnswerList().get(1).isValue()) {
                     right = true;
+                    click = MediaPlayer.create(QuestionActivity.this, R.raw.click);
                     click.start();
 
                     check.setVisibility(View.GONE);
@@ -234,6 +238,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 freeze();
                 if (questionList.get(INDEX).getAnswerList().get(2).isValue()) {
                     right = true;
+                    click = MediaPlayer.create(QuestionActivity.this, R.raw.click);
                     click.start();
 
                     check.setVisibility(View.GONE);
@@ -251,6 +256,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 freeze();
                 if (questionList.get(INDEX).getAnswerList().get(3).isValue()) {
                     right = true;
+                    click = MediaPlayer.create(QuestionActivity.this, R.raw.click);
                     click.start();
 
                     check.setVisibility(View.GONE);

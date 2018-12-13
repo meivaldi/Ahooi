@@ -114,18 +114,23 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
                     int poen = Integer.valueOf(hadiah.getPoint());
                     int pt = Integer.valueOf(user.get("poin"));
 
-                    if(pt > 0){
-                        int value = pt-poen;
-                        if(value < 0)
-                            value = pt;
+                    if(pt >= poen) {
+                        congrats.setText("Selamat lah wak ya, dapat " + hadiah.getNama() + " kau!");
+                        dialog.show();
 
-                        db.updateValue("poin", email, Integer.toString(value));
+                        if(pt > 0){
+                            int value = pt-poen;
+                            if(value < 0)
+                                value = pt;
+
+                            db.updateValue("poin", email, Integer.toString(value));
+                        }
+
+                        getPrize(id, hadiah.getId());
+
+                    } else {
+                        Toast.makeText(context, "Poen kau nggak cukopp!", Toast.LENGTH_SHORT).show();
                     }
-
-                    getPrize(id, hadiah.getId());
-
-                    congrats.setText("Selamat lah wak ya, dapat " + hadiah.getNama() + " kau!");
-                    dialog.show();
 
                 } else {
                     Toast.makeText(context, "Login dulu wak!", Toast.LENGTH_SHORT).show();

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "937575294787",
+    "firebase_url": "https://ahooi-medan.firebaseio.com",
+    "project_id": "ahooi-medan",
+    "storage_bucket": "ahooi-medan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937575294787:android:f0f3bf7c83724938",
+        "android_client_info": {
+          "package_name": "id.co.millennial.ahooi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937575294787-32fscc7nhsnp65fdimf9c7ek0vo4aufl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4xzlx-auVvVJHed3jBlkmi6OumrPnfmc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

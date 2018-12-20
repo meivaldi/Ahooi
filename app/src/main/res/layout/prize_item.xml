@@ -49,19 +49,24 @@
             android:layout_marginEnd="50dp">
 
             <Button
+                android:id="@+id/background"
                 android:layout_marginTop="5dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
+                android:layout_centerHorizontal="true"
+                android:text="Konfirmasi\n(Dilakukan oleh petugas)"
+                android:textSize="18dp"
+                android:textColor="@android:color/transparent"
                 android:textAllCaps="false"
                 android:clickable="false"
                 android:background="@drawable/ambel_button_2"/>
 
             <Button
                 android:id="@+id/konfirmasi"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Konfirmasi"
+                android:layout_centerHorizontal="true"
+                android:text="Konfirmasi\n(Dilakukan oleh petugas)"
                 android:textSize="18dp"
                 android:textColor="@android:color/white"
                 android:textAllCaps="false"

@@ -2,10 +2,17 @@ package id.co.millennial.ahooi.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,24 +20,49 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import id.co.millennial.ahooi.R;
+import id.co.millennial.ahooi.adapter.NewsAdapter;
+import id.co.millennial.ahooi.app.AppConfig;
+import id.co.millennial.ahooi.app.AppController;
 import id.co.millennial.ahooi.helper.SQLiteHandler;
 import id.co.millennial.ahooi.helper.SessionManager;
+import id.co.millennial.ahooi.model.Berita;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button main, hadiah, keluar;
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private Button main, hadiah, keluar, iya, tidak;
     private RelativeLayout login;
-    private Dialog dialog;
-    private TextView title, nama;
+    private Dialog dialog, interact;
+    private TextView title, nama, label;
     private ImageView notifikasi;
     private MediaPlayer click, menu;
 
     private SQLiteHandler db;
     private SessionManager session;
+
+    private RecyclerView recyclerView;
+    private NewsAdapter beritaAdapter;
+    private List<Berita> beritaList;
+
+    private boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        checkUpdate();
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
 
@@ -74,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 click.start();
+                flag = true;
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
         });
@@ -87,6 +122,18 @@ public class MainActivity extends AppCompatActivity {
         dialog.setCancelable(true);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
+        beritaList = new ArrayList<>();
+        beritaAdapter = new NewsAdapter(this, beritaList);
+        recyclerView = dialog.findViewById(R.id.recycler_view);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(beritaAdapter);
+
+        fetchNews();
+
         title = dialog.findViewById(R.id.title);
         title.setTypeface(typeface);
 
@@ -96,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 click.start();
                 startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
                 menu.release();
+                flag = true;
                 finish();
             }
         });
@@ -104,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 click.start();
+                flag = true;
                 startActivity(new Intent(getApplicationContext(), HadiahActivity.class));
             }
         });
@@ -111,9 +160,39 @@ public class MainActivity extends AppCompatActivity {
         keluar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Typeface tf = Typeface.createFromAsset(getAssets(), "fonts/GOODDC_.TTF");
+
                 click.start();
-                menu.release();
-                finish();
+                interact = new Dialog(MainActivity.this);
+                interact.setContentView(R.layout.dialog);
+                interact.setCancelable(true);
+                interact.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                interact.show();
+
+                label = interact.findViewById(R.id.label);
+                iya = interact.findViewById(R.id.iya);
+                tidak = interact.findViewById(R.id.nggak);
+
+                label.setTypeface(tf);
+                iya.setTypeface(tf);
+                tidak.setTypeface(tf);
+
+                iya.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        interact.dismiss();
+                        menu.release();
+                        finish();
+                    }
+                });
+
+                tidak.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        interact.dismiss();
+                    }
+                });
             }
         });
 
@@ -124,6 +203,50 @@ public class MainActivity extends AppCompatActivity {
                 click.start();
             }
         });
+    }
+
+    private void fetchNews() {
+        String tag_string_req = "req_login";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_GET_NEWS, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Get Response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    JSONArray jsonArray = jObj.getJSONArray("berita");
+                    JSONObject news;
+                    String judul, url;
+
+                    for(int i=0; i<jsonArray.length(); i++){
+                        news = jsonArray.getJSONObject(i);
+                        judul = news.getString("judul");
+                        url = news.getString("url");
+
+                        beritaList.add(new Berita(judul, url, true));
+                    }
+
+                    beritaAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Get Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
     @Override
@@ -140,6 +263,14 @@ public class MainActivity extends AppCompatActivity {
             nama = (TextView) findViewById(R.id.masok);
             nama.setText(name);
         }
+
+        if(flag){
+           flag = false;
+        } else {
+            menu = MediaPlayer.create(this, R.raw.gamemenu);
+            menu.setLooping(true);
+            menu.start();
+        }
     }
 
     private void logoutUser() {
@@ -150,11 +281,135 @@ public class MainActivity extends AppCompatActivity {
         nama.setText("Masok");
     }
 
+    private void checkUpdate() {
+        String tag_string_req = "req_cek_update";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_VERSION, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Cek Update Response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String version = jObj.getString("version");
+
+                    PackageInfo packageInfo = null;
+                    try {
+                        packageInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    String versionApk = packageInfo.versionName;
+
+                    if(version.equals(versionApk)){
+                        storeApkVersion(versionApk);
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), UpdateActivity.class));
+                        finish();
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void storeApkVersion(final String versionApk) {
+        String tag_string_req = "req_store_apk";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_STORE_APK, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "APK Response: " + response.toString());
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "APK Error: " + error.getMessage());
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("apk", versionApk);
+
+                return params;
+            }
+
+        };
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
 
         dialog.dismiss();
+
+        if(!flag){
+            menu.release();
+        }
+
     }
 
+    @Override
+    public void onBackPressed() {
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDC_.TTF");
+
+        click.start();
+        interact = new Dialog(this);
+        interact.setContentView(R.layout.dialog);
+        interact.setCancelable(true);
+        interact.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        interact.show();
+
+        label = interact.findViewById(R.id.label);
+        iya = interact.findViewById(R.id.iya);
+        tidak = interact.findViewById(R.id.nggak);
+
+        label.setTypeface(typeface);
+        iya.setTypeface(typeface);
+        tidak.setTypeface(typeface);
+
+        iya.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                interact.dismiss();
+                menu.release();
+                finish();
+            }
+        });
+
+        tidak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                interact.dismiss();
+            }
+        });
+
+    }
 }

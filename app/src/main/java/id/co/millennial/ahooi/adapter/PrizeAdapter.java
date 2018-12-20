@@ -1,5 +1,6 @@
 package id.co.millennial.ahooi.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
@@ -41,6 +42,9 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.CustomViewHo
     private Context context;
     private List<Hadiah> hadiahList;
 
+    private Dialog dialog;
+    private TextView congrats, title;
+
     public PrizeAdapter(Context context, List<Hadiah> hadiahList) {
         this.context = context;
         this.hadiahList = hadiahList;
@@ -75,10 +79,24 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.CustomViewHo
                 .override(100, 100)
                 .into(holder.prizeImage);
 
+        dialog = new Dialog(context);
+        dialog.setContentView(R.layout.congratulation);
+        dialog.setCancelable(true);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        congrats = dialog.findViewById(R.id.greetings);
+        congrats.setTypeface(typeface);
+
+        title = dialog.findViewById(R.id.title);
+        title.setTypeface(typeface);
+
         holder.confirm.setTypeface(typeface);
+        holder.background.setTypeface(typeface);
         holder.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                congrats.setText("Dikonfirmasi");
+                dialog.show();
                 removeItem(position);
                 confirm(hadiah.getId());
             }
@@ -101,12 +119,10 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.CustomViewHo
 
                     if (!error) {
                         String message = jObj.getString("error_msg");
-                        Toast.makeText(context,
-                                message, Toast.LENGTH_LONG).show();
+                        Log.d(TAG, message);
                     } else {
                         String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(context,
-                                errorMsg, Toast.LENGTH_LONG).show();
+                        Log.d(TAG, errorMsg);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -150,12 +166,13 @@ public class PrizeAdapter extends RecyclerView.Adapter<PrizeAdapter.CustomViewHo
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private Button confirm;
+        private Button confirm, background;
         private ImageView prizeImage;
         private TextView prizeTitle;
 
         public CustomViewHolder(View itemView) {
             super(itemView);
+            background = itemView.findViewById(R.id.background);
             confirm = itemView.findViewById(R.id.konfirmasi);
             prizeImage = itemView.findViewById(R.id.price_image);
             prizeTitle = itemView.findViewById(R.id.price_name);

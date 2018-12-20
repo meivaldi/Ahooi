@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp"
+        app:elevation="10dp"
+        app:lottie_fileName="confetti.json"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/congrats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Selamat wak"
+            android:textSize="45dp"
+            android:textColor="#f8ac49" />
+
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:id="@+id/star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/star"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/congrats_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toRightOf="@id/star"
+                android:layout_centerVertical="true"
+                android:text="0"
+                android:textSize="20dp"
+                android:textColor="@android:color/white"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp">
+
+            <Button
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:clickable="false"
+                android:background="@drawable/ambel_button_2"/>
+
+            <Button
+                android:id="@+id/kembali"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Balek"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:clickable="false"
+                android:background="@drawable/ambel_button"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

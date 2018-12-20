@@ -50,11 +50,11 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
     private static final String TAG = QuestionActivity.class.getSimpleName();
 
-    private TextView poin, point, label, nama, checkpoint, betol;
+    private TextView poin, point, label, nama, checkpoint, betol, congratulation, congrats_point;
     private ProgressBar progress;
     private Handler handler = new Handler();
-    private Dialog dialog, benar;
-    private Button balek, ulangi;
+    private Dialog dialog, benar, congrats;
+    private Button balek, ulangi, kembali;
 
     private int width = 100;
     private int user_point = 0;
@@ -137,6 +137,38 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         dialog.setCancelable(false);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
+        congrats = new Dialog(QuestionActivity.this);
+        congrats.setContentView(R.layout.win);
+        congrats.setCancelable(false);
+        congrats.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        kembali = congrats.findViewById(R.id.kembali);
+        kembali.setTypeface(typeface);
+
+        kembali.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(session.isLoggedIn()) {
+                    HashMap<String, String> user = db.getUserDetails();
+                    String email = user.get("email");
+
+                    updatePoint(Integer.toString(user_point), email);
+                    music.release();
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                } else {
+                    startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                }
+            }
+        });
+
+        congrats_point = congrats.findViewById(R.id.congrats_point);
+        congrats_point.setTypeface(typeface);
+
+        congratulation = congrats.findViewById(R.id.congrats);
+        congratulation.setTypeface(tf);
+
         session = new SessionManager(getApplicationContext());
         db = new SQLiteHandler(getApplicationContext());
 
@@ -163,6 +195,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
                 finish();
                 music.release();
+                congrats.dismiss();
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
@@ -264,8 +297,21 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         });
 
         adView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        final AdRequest adRequest = new AdRequest.Builder().build();
+
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                adView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adView.loadAd(adRequest);
+                    }
+                });
+            }
+        });
+
+        thread.start();
 
     }
 
@@ -463,6 +509,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         end.release();
         click.release();
         isRunning = false;
+        congrats.dismiss();
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         Toast.makeText(getApplicationContext(), "Ahh lemahla kau!", Toast.LENGTH_SHORT).show();
         finish();
@@ -516,14 +563,14 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 });
 
                 music.release();
-                MediaPlayer congrats = MediaPlayer.create(this, R.raw.nextquestion);
-                congrats.start();
+                final MediaPlayer congrat = MediaPlayer.create(this, R.raw.nextquestion);
+                congrat.start();
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                congrats.release();
+                congrat.release();
                 music = MediaPlayer.create(this, R.raw.inquestion);
                 music.start();
 
@@ -543,10 +590,9 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                         if (INDEX < 10)
                             startQuestion(INDEX);
                         else {
-                            ulangi.setVisibility(View.GONE);
-                            point.setText(Integer.toString(user_point));
+                            congrats_point.setText(Integer.toString(user_point));
                             isRunning = false;
-                            showDialog();
+                            congrats.show();
                         }
                     }
                 });

@@ -25,8 +25,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONArray;
@@ -73,8 +75,10 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
     private int INDEX = 0;
     private boolean right = false;
+    private boolean inQuestion = false;
 
     private AdView adView;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,10 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         setContentView(R.layout.activity_question);
 
         MobileAds.initialize(this, "ca-app-pub-3364138612972741~4746456309");
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3364138612972741/4921685274");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         loadQuestion();
 
@@ -148,17 +156,10 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         kembali.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(session.isLoggedIn()) {
-                    HashMap<String, String> user = db.getUserDetails();
-                    String email = user.get("email");
-
-                    updatePoint(Integer.toString(user_point), email);
-                    music.release();
-
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    finish();
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
                 } else {
-                    startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
                 }
             }
         });
@@ -186,17 +187,12 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         balek.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(session.isLoggedIn()){
-                    HashMap<String, String> user = db.getUserDetails();
-                    String email = user.get("email");
-
-                    updatePoint(Integer.toString(user_point), email);
+                inQuestion = true;
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                } else {
+                    Log.d("TAG", "The interstitial wasn't loaded yet.");
                 }
-
-                finish();
-                music.release();
-                congrats.dismiss();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
 
@@ -296,22 +292,31 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             }
         });
 
-        adView = (AdView) findViewById(R.id.adView);
-        final AdRequest adRequest = new AdRequest.Builder().build();
-
-        Thread thread = new Thread(new Runnable(){
+        mInterstitialAd.setAdListener(new AdListener(){
             @Override
-            public void run() {
-                adView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        adView.loadAd(adRequest);
-                    }
-                });
+            public void onAdClosed() {
+                if(session.isLoggedIn()) {
+                    HashMap<String, String> user = db.getUserDetails();
+                    String email = user.get("email");
+
+                    updatePoint(Integer.toString(user_point), email);
+                    music.release();
+                    congrats.dismiss();
+                    dialog.dismiss();
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                } else if (inQuestion) {
+                    music.release();
+                    congrats.dismiss();
+                    dialog.dismiss();
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } else {
+                    startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                }
             }
         });
-
-        thread.start();
 
     }
 

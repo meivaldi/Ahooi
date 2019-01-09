@@ -159,7 +159,8 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                    startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
+                    finish();
                 }
             }
         });
@@ -191,7 +192,8 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+                    startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
+                    finish();
                 }
             }
         });

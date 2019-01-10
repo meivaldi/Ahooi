@@ -125,16 +125,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        hadiahList = new ArrayList<>();
-        adapter = new PrizeAdapter(this, hadiahList);
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
-        recyclerView.setAdapter(adapter);
-
         historyList = new ArrayList<>();
         prizeAdapter = new NewsAdapter(this, historyList);
 
@@ -144,6 +134,16 @@ public class ProfileActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(prizeAdapter);
+
+        hadiahList = new ArrayList<>();
+        adapter = new PrizeAdapter(this, hadiahList);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(adapter);
 
         loadPrize(id);
 

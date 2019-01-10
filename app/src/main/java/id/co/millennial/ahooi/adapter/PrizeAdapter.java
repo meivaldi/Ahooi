@@ -29,6 +29,7 @@ import java.util.Map;
 import id.co.millennial.ahooi.R;
 import id.co.millennial.ahooi.app.AppConfig;
 import id.co.millennial.ahooi.app.AppController;
+import id.co.millennial.ahooi.model.Berita;
 import id.co.millennial.ahooi.model.Hadiah;
 
 /**

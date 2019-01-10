@@ -127,6 +127,7 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
                         }
 
                         getPrize(id, hadiah.getId());
+                        removeItem(position);
 
                     } else {
                         Toast.makeText(context, "Poen kau nggak cukopp!", Toast.LENGTH_SHORT).show();
@@ -137,6 +138,12 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
                 }
             }
         });
+    }
+
+    public void removeItem(int position){
+        hadiahList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, hadiahList.size());
     }
 
     private void getPrize(final String id_user, final String id_hadiah) {

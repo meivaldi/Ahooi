@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,12 +29,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import id.co.millennial.ahooi.R;
 import id.co.millennial.ahooi.adapter.HadiahAdapter;
 import id.co.millennial.ahooi.app.AppConfig;
 import id.co.millennial.ahooi.app.AppController;
+import id.co.millennial.ahooi.helper.SQLiteHandler;
 import id.co.millennial.ahooi.model.Answer;
 import id.co.millennial.ahooi.model.Hadiah;
 import id.co.millennial.ahooi.model.Question;
@@ -83,11 +87,15 @@ public class HadiahActivity extends AppCompatActivity {
                 finish();
             }
         });
-        
-        getHadiah();
+
+        SQLiteHandler db = new SQLiteHandler(this);
+        HashMap<String, String> user = db.getUserDetails();
+        String id = user.get("id");
+
+        getHadiah(id);
     }
 
-    private void getHadiah() {
+    private void getHadiah(final String id) {
         String tag_string_req = "req_login";
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -129,7 +137,15 @@ public class HadiahActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id);
+
+                return params;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }

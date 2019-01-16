@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="id.co.millennial.ahooi">
+
+    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,6 +19,12 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3364138612972741~4746456309"/>
 
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name"
+            tools:replace="android:theme"/>
         <activity android:name=".activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.FirstSplashScreen"
@@ -40,6 +49,11 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activity.UpdateActivity"
             android:screenOrientation="portrait" />
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider392283861541680"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

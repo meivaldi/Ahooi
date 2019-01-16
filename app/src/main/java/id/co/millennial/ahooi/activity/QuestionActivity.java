@@ -54,7 +54,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
     private TextView poin, point, label, nama, checkpoint, betol, congratulation, congrats_point;
     private ProgressBar progress;
-    private Handler handler = new Handler();
+    private Handler handler;
     private Dialog dialog, benar, congrats;
     private Button balek, ulangi, kembali;
 
@@ -87,6 +87,8 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_question);
+
+        handler = new Handler();
 
         MobileAds.initialize(this, "ca-app-pub-3364138612972741~4746456309");
 
@@ -158,8 +160,23 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             public void onClick(View v) {
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
+
+
+                    music.release();
+                    congrats.dismiss();
+                    dialog.dismiss();
+
+                    finish();
                 } else {
-                    startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
+                    HashMap<String, String> user = db.getUserDetails();
+                    String email = user.get("email");
+
+                    updatePoint(Integer.toString(user_point), email);
+                    music.release();
+                    congrats.dismiss();
+                    dialog.dismiss();
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 }
             }
@@ -191,8 +208,22 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 inQuestion = true;
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
+
+                    music.release();
+                    congrats.dismiss();
+                    dialog.dismiss();
+
+                    finish();
                 } else {
-                    startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
+                    HashMap<String, String> user = db.getUserDetails();
+                    String email = user.get("email");
+
+                    updatePoint(Integer.toString(user_point), email);
+                    music.release();
+                    congrats.dismiss();
+                    dialog.dismiss();
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 }
             }
@@ -302,9 +333,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     String email = user.get("email");
 
                     updatePoint(Integer.toString(user_point), email);
-                    music.release();
-                    congrats.dismiss();
-                    dialog.dismiss();
+                    // disini
 
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
@@ -352,11 +381,10 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
                     if (!error) {
                         HashMap<String, String> user = db.getUserDetails();
-                        String email = user.get("email");
                         int pt = Integer.valueOf(user.get("poin"));
                         int poen = Integer.valueOf(point);
 
-                        db.updateValue("poin", email, Integer.toString((poen) + pt));
+                        db.updateValue("poin", Integer.toString((poen) + pt));
                     } else {
                         String errorMsg = jObj.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
@@ -410,6 +438,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
         setRunning(true);
         setToDefault();
         unfreeze();
+
         new Thread(this).start();
     }
 
@@ -623,6 +652,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                 });
             }
         }
+
     }
 
     private void setToDefault() {

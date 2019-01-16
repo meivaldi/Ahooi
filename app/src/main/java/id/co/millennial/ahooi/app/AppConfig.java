@@ -18,5 +18,7 @@ public class AppConfig {
     public static String URL_GET_NEWS = "https://www.ahooimedan.com/ahooi/android/fetch_news.php";
     public static String URL_VERSION = "https://www.ahooimedan.com/ahooi/android/version.php";
     public static String URL_STORE_APK = "https://www.ahooimedan.com/ahooi/android/apk.php";
+    public static String URL_UPDATE_SHARE_POINT = "https://www.ahooimedan.com/ahooi/android/share_point.php";
+    public static String URL_UPDATE_USER_PRIZE = "https://www.ahooimedan.com/ahooi/android/update_user_prize.php";
 
 }

@@ -4,8 +4,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,10 +25,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareHashtag;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareButton;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
@@ -51,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private Button main, hadiah, keluar, iya, tidak;
+    private Button main, hadiah, keluar, iya, tidak, share;
     private RelativeLayout login;
     private Dialog dialog, interact;
     private TextView title, nama, label;
@@ -66,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Berita> beritaList;
 
     private boolean flag = false;
+    private ShareLinkContent shareLinkContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        FacebookSdk.setApplicationId("392283861541680");
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         checkUpdate();
 
@@ -88,6 +104,40 @@ public class MainActivity extends AppCompatActivity {
         main = (Button) findViewById(R.id.main);
         hadiah = (Button) findViewById(R.id.hadiah);
         keluar = (Button) findViewById(R.id.keluar);
+        share = (Button) findViewById(R.id.share);
+
+        shareLinkContent = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse("https://play.google.com/store/apps/details?id=id.co.millennial.ahooi"))
+                .setShareHashtag((new ShareHashtag.Builder()
+                        .setHashtag("#ahooimedan")
+                        .build()))
+                .setQuote("Download aplikasi Ahooi Medan dan dapatkan hadiahnya!")
+                .build();
+
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(image)
+                .build();
+        /*SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();*/
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ShareDialog.show(MainActivity.this, shareLinkContent);
+                if(session.isLoggedIn()) {
+                    Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+                    intent.setType("text/plain");
+                    String shareBodyText = "Main game dapat hadiah? Download aplikasi Ahooi Medan sekarang juga!\n\n" +
+                            "https://play.google.com/store/apps/details?id=id.co.millennial.ahooi";
+                    intent.putExtra(android.content.Intent.EXTRA_TEXT, shareBodyText);
+                    startActivityForResult(Intent.createChooser(intent, "Choose sharing method"), 100);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Login dulu wak, baru nge share", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         if (!session.isLoggedIn()) {
             logoutUser();
@@ -249,6 +299,72 @@ public class MainActivity extends AppCompatActivity {
                         error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 100) {
+            if(resultCode == RESULT_OK) {
+                HashMap<String, String> credentials = db.getUserDetails();
+                String id = credentials.get("id");
+                int sharePoint = Integer.valueOf(credentials.get("share")) + 1;
+
+                updateSharePoint(id);
+                db.updateValue("share", Integer.toString(sharePoint));
+
+            } else if(resultCode == RESULT_CANCELED) {
+
+            }
+        }
+    }
+
+    private void updateSharePoint(final String id) {
+        String tag_string_req = "req_login";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_UPDATE_SHARE_POINT, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Get Response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+
+                    if(!error) {
+                        String msg = jObj.getString("error_msg");
+                        Log.d("ERROR", msg);
+                    } else {
+                        String msg = jObj.getString("error_msg");
+                        Log.d("ERROR", msg);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Get Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("id", id);
+
+                return params;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }

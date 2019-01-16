@@ -145,10 +145,11 @@ public class LoginActivity extends AppCompatActivity {
                         String long_name = user.getString("long_name");
                         String poin = user.getString("poin");
                         String email = user.getString("email");
+                        String share = user.getString("share");
                         String created_at = user
                                 .getString("created_at");
 
-                        db.addUser(id, name, long_name, email, poin, created_at);
+                        db.addUser(id, name, long_name, email, poin, share, created_at);
 
                         if(getIntent().getBooleanExtra("FLAG", false)){
                             finish();

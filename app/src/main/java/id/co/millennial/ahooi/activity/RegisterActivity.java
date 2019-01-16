@@ -137,10 +137,11 @@ public class RegisterActivity extends AppCompatActivity {
                         String long_name = user.getString("long_name");
                         String email = user.getString("email");
                         String poin = user.getString("poin");
+                        String share = "0";
                         String created_at = user
                                 .getString("created_at");
 
-                        db.addUser(id, name, long_name, email, poin, created_at);
+                        db.addUser(id, name, long_name, email, poin, share, created_at);
 
                         Toast.makeText(getApplicationContext(), "Udah terdaftar, masok lah kau", Toast.LENGTH_LONG).show();
 

@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Ahooi</string>
     <string name="notice">1. Hadiah harap diambil dikantor PAC Gerindra Medan Johor, Jl. Karya Jaya No. 114A \n\n2. Hanya peserta yang berdomisili di wilayah Medan Johor, Medan Sunggal, Medan Polonia, Medan Selayang, Medan Maimun, danMedan Tuntungan yang bisa mengambil hadiah.</string>
+    <string name="facebook_app_id">392283861541680</string>
+    <string name="share">Share This Apps</string>
 </resources>

@@ -92,6 +92,10 @@ public class HadiahActivity extends AppCompatActivity {
         HashMap<String, String> user = db.getUserDetails();
         String id = user.get("id");
 
+        if(id == null) {
+            id = " ";
+        }
+
         getHadiah(id);
     }
 

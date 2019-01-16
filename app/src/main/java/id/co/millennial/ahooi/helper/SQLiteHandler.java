@@ -28,6 +28,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     private static final String KEY_LONG_NAME = "long_name";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_POIN = "poin";
+    private static final String KEY_SHARE = "share";
     private static final String KEY_CREATED_AT = "created_at";
 
     public SQLiteHandler(Context context) {
@@ -39,7 +40,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_USER + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT," + KEY_LONG_NAME + " TEXT,"
-                + KEY_EMAIL + " TEXT UNIQUE," + KEY_POIN + " TEXT UNIQUE,"
+                + KEY_EMAIL + " TEXT UNIQUE," + KEY_POIN + " TEXT UNIQUE," + KEY_SHARE + " TEXT UNIQUE,"
                 + KEY_CREATED_AT + " TEXT" + ")";
         db.execSQL(CREATE_LOGIN_TABLE);
 
@@ -54,7 +55,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addUser(String id, String name, String long_name, String email, String poin, String created_at) {
+    public void addUser(String id, String name, String long_name, String email, String poin, String share, String created_at) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -63,6 +64,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         values.put(KEY_LONG_NAME, long_name);
         values.put(KEY_EMAIL, email);
         values.put(KEY_POIN, poin);
+        values.put(KEY_SHARE, share);
         values.put(KEY_CREATED_AT, created_at);
 
         long register_id = db.insert(TABLE_USER, null, values);
@@ -71,7 +73,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
         Log.d(TAG, "New user inserted into sqlite: " + register_id);
     }
 
-    public void updateValue(String column, String email, String value){
+    public void updateValue(String column, String value){
         SQLiteDatabase db = this.getWritableDatabase();
         String sql = "UPDATE " + TABLE_USER + " SET " + column + " = '"
                 + value + "'";
@@ -93,7 +95,8 @@ public class SQLiteHandler extends SQLiteOpenHelper {
             user.put("long_name", cursor.getString(2));
             user.put("email", cursor.getString(3));
             user.put("poin", cursor.getString(4));
-            user.put("created_at", cursor.getString(5));
+            user.put("share", cursor.getString(5));
+            user.put("created_at", cursor.getString(6));
         }
         cursor.close();
         db.close();

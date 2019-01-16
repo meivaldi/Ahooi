@@ -86,7 +86,7 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
 
         Glide.with(context)
                 .load(hadiah.getFoto())
-                .override(100, 100)
+                .override(200, 200)
                 .into(holder.foto);
 
         db = new SQLiteHandler(context);
@@ -123,7 +123,7 @@ public class HadiahAdapter extends RecyclerView.Adapter<HadiahAdapter.MyViewHold
                             if(value < 0)
                                 value = pt;
 
-                            db.updateValue("poin", email, Integer.toString(value));
+                            db.updateValue("poin", Integer.toString(value));
                         }
 
                         getPrize(id, hadiah.getId());

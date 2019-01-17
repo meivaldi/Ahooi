@@ -7,8 +7,8 @@ android {
         applicationId "id.co.millennial.ahooi"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 11
-        versionName "2.0"
+        versionCode 13
+        versionName "2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

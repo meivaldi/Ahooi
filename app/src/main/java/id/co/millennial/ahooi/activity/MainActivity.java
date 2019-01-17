@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.setApplicationId("392283861541680");
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        checkUpdate();
-
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
 
         db = new SQLiteHandler(getApplicationContext());
@@ -399,87 +397,6 @@ public class MainActivity extends AppCompatActivity {
 
         nama = (TextView) findViewById(R.id.masok);
         nama.setText("Masok");
-    }
-
-    private void checkUpdate() {
-        String tag_string_req = "req_cek_update";
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_VERSION, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Cek Update Response: " + response.toString());
-
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    String version = jObj.getString("version");
-
-                    PackageInfo packageInfo = null;
-                    try {
-                        packageInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                    String versionApk = packageInfo.versionName;
-
-                    if(version.equals(versionApk)){
-                        storeApkVersion(versionApk);
-                    } else {
-                        startActivity(new Intent(getApplicationContext(), UpdateActivity.class));
-                        finish();
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Login Error: " + error.getMessage());
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
-
-    private void storeApkVersion(final String versionApk) {
-        String tag_string_req = "req_store_apk";
-
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_STORE_APK, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "APK Response: " + response.toString());
-
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "APK Error: " + error.getMessage());
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("apk", versionApk);
-
-                return params;
-            }
-
-        };
-
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-
     }
 
     @Override

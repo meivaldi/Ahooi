@@ -7,8 +7,8 @@ android {
         applicationId "id.co.millennial.ahooi"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 13
-        versionName "2.2"
+        versionCode 15
+        versionName "2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -36,6 +36,8 @@ dependencies {
     compile 'com.airbnb.android:lottie:1.5.3'
     compile 'com.google.android.gms:play-services-ads:17.1.1'
     compile 'com.facebook.android:facebook-share:[4,5)'
+    compile 'io.sentry:sentry-android:1.7.16'
+    compile 'org.slf4j:slf4j-nop:1.7.25'
 }
 
 apply plugin: 'com.google.gms.google-services'

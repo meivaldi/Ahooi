@@ -47,6 +47,7 @@ import id.co.millennial.ahooi.helper.SQLiteHandler;
 import id.co.millennial.ahooi.helper.SessionManager;
 import id.co.millennial.ahooi.model.Answer;
 import id.co.millennial.ahooi.model.Question;
+import io.sentry.Sentry;
 
 public class QuestionActivity extends AppCompatActivity implements Runnable {
 
@@ -77,8 +78,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
     private boolean right = false;
     private boolean inQuestion = false;
 
-    private AdView adView;
-    private InterstitialAd mInterstitialAd;
+    //private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +90,11 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
 
         handler = new Handler();
 
-        MobileAds.initialize(this, "ca-app-pub-3364138612972741~4746456309");
+        /*MobileAds.initialize(this, "ca-app-pub-3364138612972741~4746456309");
 
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3364138612972741/4921685274");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());*/
 
         loadQuestion();
 
@@ -160,7 +160,6 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             public void onClick(View v) {
                 if (mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
-
 
                     music.release();
                     congrats.dismiss();
@@ -392,6 +391,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Sentry.capture(e);
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
@@ -401,6 +401,7 @@ public class QuestionActivity extends AppCompatActivity implements Runnable {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Get Error: " + error.getMessage());
+                Sentry.capture(error);
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
             }

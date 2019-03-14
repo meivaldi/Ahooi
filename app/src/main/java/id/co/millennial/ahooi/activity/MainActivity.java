@@ -4,11 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,28 +22,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.facebook.FacebookSdk;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareHashtag;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
-import com.facebook.share.widget.ShareButton;
-import com.facebook.share.widget.ShareDialog;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +44,8 @@ import id.co.millennial.ahooi.app.AppController;
 import id.co.millennial.ahooi.helper.SQLiteHandler;
 import id.co.millennial.ahooi.helper.SessionManager;
 import id.co.millennial.ahooi.model.Berita;
+import id.co.millennial.ahooi.question.QuestionOne;
+import io.sentry.Sentry;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -78,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Berita> beritaList;
 
     private boolean flag = false;
-    private ShareLinkContent shareLinkContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        FacebookSdk.setApplicationId("392283861541680");
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        checkUpdate();
 
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/GOODDP_.TTF");
 
@@ -104,26 +90,9 @@ public class MainActivity extends AppCompatActivity {
         keluar = (Button) findViewById(R.id.keluar);
         share = (Button) findViewById(R.id.share);
 
-        shareLinkContent = new ShareLinkContent.Builder()
-                .setContentUrl(Uri.parse("https://play.google.com/store/apps/details?id=id.co.millennial.ahooi"))
-                .setShareHashtag((new ShareHashtag.Builder()
-                        .setHashtag("#ahooimedan")
-                        .build()))
-                .setQuote("Download aplikasi Ahooi Medan dan dapatkan hadiahnya!")
-                .build();
-
-        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
-        SharePhoto photo = new SharePhoto.Builder()
-                .setBitmap(image)
-                .build();
-        /*SharePhotoContent content = new SharePhotoContent.Builder()
-                .addPhoto(photo)
-                .build();*/
-
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ShareDialog.show(MainActivity.this, shareLinkContent);
                 if(session.isLoggedIn()) {
                     Intent intent = new Intent(android.content.Intent.ACTION_SEND);
                     intent.setType("text/plain");
@@ -192,7 +161,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 click.start();
-                startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
+                //startActivity(new Intent(getApplicationContext(), QuestionActivity.class));
+
+                int[] array = getRandom(40);
+
+                Intent intent = new Intent(getApplicationContext(), QuestionOne.class);
+                intent.putExtra("index", array);
+                startActivity(intent);
+
                 menu.release();
                 flag = true;
                 finish();
@@ -257,6 +233,107 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private int[] getRandom(int size) {
+        int array[] = new int[10];
+        ArrayList<Integer> list = new ArrayList<>();
+
+        for(int i=0; i<size; i++) {
+            list.add(new Integer(i)+1);
+        }
+
+        Collections.shuffle(list);
+
+        for(int i=0; i<10; i++) {
+            array[i] = list.get(i);
+            Log.d("TES", String.valueOf(array[i]));
+        }
+
+        return array;
+    }
+
+    private void checkUpdate() {
+        String tag_string_req = "req_cek_update";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_VERSION, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Cek Update Response: " + response.toString());
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    String version = jObj.getString("version");
+
+                    PackageInfo packageInfo = null;
+                    try {
+                        packageInfo = getApplicationContext().getPackageManager().getPackageInfo(getPackageName(), 0);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        Sentry.capture(e);
+                    }
+
+                    String versionApk = packageInfo.versionName;
+
+                    if(version.equals(versionApk)){
+                        storeApkVersion(versionApk);
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), UpdateActivity.class));
+                        finish();
+                    }
+
+
+                } catch (JSONException e) {
+                    Sentry.capture(e);
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Login Error: " + error.getMessage());
+                Sentry.capture(error);
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void storeApkVersion(final String versionApk) {
+        String tag_string_req = "req_store_apk";
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_STORE_APK, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "APK Response: " + response.toString());
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "APK Error: " + error.getMessage());
+                Sentry.capture(error);
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("apk", versionApk);
+
+                return params;
+            }
+
+        };
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+
+    }
+
     private void fetchNews() {
         String tag_string_req = "req_login";
 
@@ -283,8 +360,7 @@ public class MainActivity extends AppCompatActivity {
 
                     beritaAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Sentry.capture(e);
                 }
 
             }
@@ -293,8 +369,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Get Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                Sentry.capture(error);
             }
         });
 
@@ -341,7 +416,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Sentry.capture(e);
                     Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 }
 
@@ -351,6 +426,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Get Error: " + error.getMessage());
+                Sentry.capture(error);
                 Toast.makeText(getApplicationContext(),
                         error.getMessage(), Toast.LENGTH_LONG).show();
             }

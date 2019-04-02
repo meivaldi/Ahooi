@@ -14,6 +14,8 @@ Berikut ini gambaran game nya:
 
 ![alt text](http://millennial.co.id/images/Screenshot_1554190604.png)
 
+![alt text](http://millennial.co.id/images/Screenshot_1554191893.png)
+
 ![alt text](http://millennial.co.id/images/Screenshot_1554190613.png)
 
 ![alt text](http://millennial.co.id/images/Screenshot_1554190619.png)

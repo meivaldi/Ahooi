@@ -6,16 +6,12 @@ menjawab tersebut dengan benar, maka akan diberi rewards berupa 10 poin. Dimana 
 
 Berikut ini gambaran game nya:
 
-![alt text](http://millennial.co.id/images/Screenshot_1554190551.png)
+![alt text](https://meivaldi.com/ahooi/ahooi1.jpg)
 
-![alt text](http://millennial.co.id/images/Screenshot_1554190555.png)
+![alt text](https://meivaldi.com/ahooi/ahooi2.jpg)
 
-![alt text](http://millennial.co.id/images/Screenshot_1554190591.png)
+![alt text](https://meivaldi.com/ahooi/ahooi3.jpg)
 
-![alt text](http://millennial.co.id/images/Screenshot_1554190604.png)
+![alt text](https://meivaldi.com/ahooi/ahooi4.jpg)
 
-![alt text](http://millennial.co.id/images/Screenshot_1554191893.png)
-
-![alt text](http://millennial.co.id/images/Screenshot_1554190613.png)
-
-![alt text](http://millennial.co.id/images/Screenshot_1554190619.png)
+![alt text](https://meivaldi.com/ahooi/ahooi5.jpg)
